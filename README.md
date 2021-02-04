@@ -1,6 +1,6 @@
 # RUG-Software-Engineering-RogerThatProject
 </br>
-#General Rules for this git repository
+## General Rules for this git repository
 </br>
 Each student in the group will have different tasks and some of them might result into changes in the same file, therefore we can't work all on the same branch.
 Before starting doing your task you MUST:</br>
