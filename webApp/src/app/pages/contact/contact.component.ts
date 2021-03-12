@@ -1,19 +1,23 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder} from '@angular/forms';
 
+
 @Component({
   selector: 'app-contact',
   templateUrl: './contact.component.html',
   styleUrls: ['./contact.component.css']
 })
+
 export class ContactComponent implements OnInit {
-  //items = this.contact.group();
+
   contactForm = this.formBuilder.group({
     name: '',
     emailAddress: '',
     message : ''
   });
-  constructor(private formBuilder: FormBuilder,private contact: ContactComponent) { }
+
+  constructor(private formBuilder: FormBuilder) { }
+
   onSubmit(): void {
     // Process checkout data here
     //this.items = this.contact.clearAll();
@@ -22,5 +26,4 @@ export class ContactComponent implements OnInit {
   }
   ngOnInit():void  {
   }
-
 }

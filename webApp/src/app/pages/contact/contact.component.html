@@ -9,6 +9,32 @@
         <li>Call us: +31627463212</li>
     </nz-content>
   </nz-layout>
+  <form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
+    <h2>Do you have a question?</h2>
+    <h3>Send us an email!</h3>
+    <div>
+      <label for="name">
+        Name:
+      </label>
+      <input id="name" type="text" formControlName="name" placeholder="Your name">
+    </div>
+
+    <div>
+      <label for="emailAddress">
+        Email address:
+      </label>
+      <input id="emailAddress" type="text" formControlName="emailAddress" placeholder="Your email">
+    </div>
+    <div>
+      <label for="message">
+        Your message:
+      </label>
+      <input id="message" type="text" formControlName="message" placeholder="Type here your message..">
+    </div>
+
+    <button class="button" type="submit">Send message</button>
+
+  </form>
 </nz-layout>
 
 
