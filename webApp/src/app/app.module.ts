@@ -14,6 +14,7 @@ import { IconsProviderModule } from './icons-provider.module';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { ContactComponent } from './pages/contact/contact.component';
+import { SignInComponent } from './pages/sign-in/sign-in.component';
 
 registerLocaleData(en);
 
@@ -21,6 +22,7 @@ registerLocaleData(en);
   declarations: [
     AppComponent,
     ContactComponent,
+    SignInComponent,
   ],
   imports: [
     BrowserModule,
