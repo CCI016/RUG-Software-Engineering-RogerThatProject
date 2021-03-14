@@ -15,6 +15,7 @@ import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { ContactComponent } from './pages/contact/contact.component';
 import { SignInComponent } from './pages/sign-in/sign-in.component';
+import { ProfileComponent } from './pages/profile/profile.component';
 
 registerLocaleData(en);
 
@@ -23,6 +24,7 @@ registerLocaleData(en);
     AppComponent,
     ContactComponent,
     SignInComponent,
+    ProfileComponent,
   ],
   imports: [
     BrowserModule,

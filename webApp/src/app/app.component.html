@@ -12,19 +12,19 @@
       </a>
     </div>
     <ul nz-menu nzTheme="dark" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
-      <li nz-submenu nzOpen nzTitle="Dashboard" nzIcon="dashboard">
+      <li nz-submenu nzOpen nzTitle="My Profile" nzIcon="user">
         <ul>
           <li nz-menu-item nzMatchRouter>
-            <a routerLink="/welcome">Welcome</a>
+            <i nz-icon nzType="idcard" nzTheme="outline"></i>
+            <a routerLink="/profile">My information</a>
           </li>
-          <li nz-menu-item nzMatchRouter>
-            <a routerLink ="/sign-in">Sign in</a>
+          <li nz-menu-item>
+            <i nz-icon nzType="setting" nzTheme="outline"></i>
+            <a routerLink="/profile">Settings</a>
           </li>
-          <li nz-menu-item nzMatchRouter>
-            <a>Sign up</a>
-          </li>
-          <li nz-menu-item nzMatchRouter>
-            <a routerLink ="/contact">Contact us</a>
+          <li nz-menu-item>
+            <i nz-icon nzType="import" nzTheme="outline"></i>
+            <a routerLink="/profile">Log Out</a>
           </li>
         </ul>
       </li>
