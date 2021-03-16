@@ -1,9 +1,11 @@
-package endpoints;
+package org.rogerthat.endpoints;
 
 import org.apache.commons.io.IOUtils;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.jboss.resteasy.plugins.providers.multipart.InputPart;
 import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
+import org.rogerthat.orm.CsvFiles;
+import org.rogerthat.orm.User;
 
 import javax.transaction.Transactional;
 import javax.ws.rs.Consumes;
@@ -24,6 +26,9 @@ public class FileUploadEndpoint {
 	@ConfigProperty(name = "csv.directory")
 	String csvDirectory;
 
+	@ConfigProperty(name = "csv.standard.filename")
+	String standardFileName;
+
 	/**
 	 * Endpoint for uploading csv files.
 	 * @param input The file itself.
@@ -34,12 +39,23 @@ public class FileUploadEndpoint {
 	@Path("/upload")
 	@Consumes("multipart/form-data")
 	@Transactional
-	public Response uploadFile(MultipartFormDataInput input, @QueryParam("userId") long userId) {
+	public Response uploadFile(MultipartFormDataInput input, @QueryParam("userId") int userId) {
 
 		String fileName = "";
 		String csvFileName = "";
 		Map<String, List<InputPart>> uploadForm = input.getFormDataMap();
 		List<InputPart> inputParts = uploadForm.get("uploadedFile");
+		User user;
+
+		try {
+			user = User.findById(userId);
+		} catch (Exception e) {
+			return Response.status(500).build();
+		}
+
+		if (user == null) {
+			return Response.status(500).build();
+		}
 
 		for (InputPart inputPart : inputParts) {
 
@@ -47,9 +63,9 @@ public class FileUploadEndpoint {
 
 				MultivaluedMap<String, String> header = inputPart.getHeaders();
 				fileName = getFileName(header);
-				csvFileName = "test"; //Need to replace with a function that will rename the files based on the db
-				System.out.println("FileName:" + fileName);
-				System.out.println("Asterisk File Name" + csvFileName);
+				csvFileName = getSystemFileName();
+//				System.out.println("FileName:" + fileName);
+//				System.out.println("Asterisk File Name" + csvFileName);
 				//convert the uploaded file to inputstream
 				InputStream inputStream = inputPart.getBody(InputStream.class,null);
 
@@ -58,14 +74,20 @@ public class FileUploadEndpoint {
 				writeFile(bytes,csvDirectory + csvFileName);
 
 			} catch (IOException e) {
-				e.printStackTrace();
+//				e.printStackTrace();
 				return Response.status(500).build();
 			}
 
 		}
 
-		//Here we need to persist everything into the database.
+		CsvFiles csvFiles = new CsvFiles();
+		csvFiles.originalName = fileName;
+		csvFiles.changedName = csvFileName;
+		csvFiles.user = user;
 
+		csvFiles.persist();
+
+		// After this we need to call somehow the parser but we should not block the thread;
 		return Response.status(200).build();
 
 	}
@@ -90,6 +112,14 @@ public class FileUploadEndpoint {
 		return "unknown";
 	}
 
+	private String getSystemFileName() {
+		List<CsvFiles> files= CsvFiles.find("ORDER BY id DESC").list();
+		if (files.size() == 0) {
+			return (standardFileName + "1");
+		}
+		return (standardFileName + files.get(0).id + 1);
+	}
+
 	/**
 	 * Save the file to a folder.
 	 * @param content
@@ -112,4 +142,5 @@ public class FileUploadEndpoint {
 		fop.close();
 
 	}
+
 }
