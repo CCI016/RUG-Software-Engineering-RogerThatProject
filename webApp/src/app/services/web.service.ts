@@ -11,7 +11,7 @@ export class WebRequestService {
   constructor(private http: HttpClient) {
   }
 
-  getData(uri : string) {
+  getData(uri : string) : Observable<any>{ 
     return this.http.get(`${this.ROOT_URL}/${uri}`);
   }
 
