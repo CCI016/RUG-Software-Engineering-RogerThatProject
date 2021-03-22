@@ -13,7 +13,8 @@
   position: relative;
   z-index: 10;
   min-height: 100vh;
-  box-shadow: 2px 0 6px rgba(0,21,41,.35);
+  box-shadow: 2px 0 6px rgba(16, 15, 15, 0.35);
+
 }
 
 .header-trigger {
@@ -25,7 +26,8 @@
 }
 
 .trigger:hover {
-  color: #1890ff;
+  color: #141515;
+  padding-block-end: 1000px;
 }
 
 .sidebar-logo {
@@ -34,14 +36,14 @@
   padding-left: 24px;
   overflow: hidden;
   line-height: 64px;
-  background: #001529;
+  background: #141515;
   transition: all .3s;
 }
 
 .sidebar-logo img {
   display: inline-block;
-  height: 32px;
-  width: 32px;
+  height: 48px;
+  width: 48px;
   vertical-align: middle;
 }
 
@@ -61,20 +63,10 @@ nz-header {
   z-index: 2;
 }
 
-.app-header {
-  position: relative;
-  height: 64px;
-  padding: 0;
-  background: #fff;
-  box-shadow: 0 1px 4px rgba(0,21,41,.08);
-}
 
-nz-content {
-  margin: 24px;
-}
 
 .inner-content {
-  padding: 24px;
   background: #fff;
   height: 100%;
 }
+
