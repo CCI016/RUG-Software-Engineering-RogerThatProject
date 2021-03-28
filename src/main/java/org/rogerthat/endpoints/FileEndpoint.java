@@ -42,22 +42,21 @@ public class FileEndpoint {
 	@Transactional
 	public Response uploadFile(MultipartFormDataInput input, @QueryParam("userId") int userId) {
 
-		System.out.println("Hotiab A inceput");
 		String fileName = "";
 		String csvFileName = "";
 		Map<String, List<InputPart>> uploadForm = input.getFormDataMap();
 		List<InputPart> inputParts = uploadForm.get("uploadedFile");
 		User user;
 
-		try {
-			user = User.findById(userId);
-		} catch (Exception e) {
-			return Response.status(500).build();
-		}
+//		try {
+//			user = User.findById(userId);
+//		} catch (Exception e) {
+//			return Response.status(500).build();
+//		}
 
-		if (user == null) {
-			return Response.status(500).build();
-		}
+//		if (user == null) {
+//			return Response.status(500).build();
+//		}
 
 		for (InputPart inputPart : inputParts) {
 
@@ -81,12 +80,12 @@ public class FileEndpoint {
 		}
 
 		System.out.println(fileName);
-		CsvFiles csvFiles = new CsvFiles();
-		csvFiles.originalName = fileName;
-		csvFiles.changedName = csvFileName;
-		csvFiles.user = user;
+//		CsvFiles csvFiles = new CsvFiles();
+//		csvFiles.originalName = fileName;
+//		csvFiles.changedName = csvFileName;
+//		csvFiles.user = user;
 
-		csvFiles.persist();
+//		csvFiles.persist();
 
 		// After this we need to call somehow the parser but we should not block the thread;
 		return Response.status(200).build();
@@ -114,11 +113,12 @@ public class FileEndpoint {
 	}
 
 	private String getSystemFileName() {
-		List<CsvFiles> files= CsvFiles.find("ORDER BY id DESC").list();
-		if (files.size() == 0) {
-			return (standardFileName + "1");
-		}
-		return (standardFileName + files.get(0).id + 1);
+		return "test.csv";
+//		List<CsvFiles> files= CsvFiles.find("ORDER BY id DESC").list();
+//		if (files.size() == 0) {
+//			return (standardFileName + "1");
+//		}
+//		return (standardFileName + files.get(0).id + 1);
 	}
 
 	/**

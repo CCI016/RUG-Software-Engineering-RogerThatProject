@@ -1,4 +1,9 @@
-.top-area {
+.top-area-left {
+  float: left;
+  margin: 5%;
+}
+
+.top-area-right {
   float: right;
   margin: 5%;
 }

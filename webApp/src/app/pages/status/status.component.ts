@@ -7,6 +7,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class StatusComponent implements OnInit {
 
+
+  userId = 1;
+  
   constructor() { }
 
   ngOnInit(): void {
