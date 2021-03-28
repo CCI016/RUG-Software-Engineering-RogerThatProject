@@ -2,11 +2,12 @@ package org.rogerthat.orm;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "spendings")
-public class Spendings extends EntitySuperclassIdOnly {
+public class Spendings extends EntitySuperclassIdOnly{
 
 	@Column(nullable = false, name = "category")
 	public int category;

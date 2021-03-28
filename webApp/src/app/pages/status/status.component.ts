@@ -12,4 +12,7 @@ export class StatusComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  downloadOverview() {
+    // Here the request to the server where the pdf file will be created and after that it will download
+  }
 }

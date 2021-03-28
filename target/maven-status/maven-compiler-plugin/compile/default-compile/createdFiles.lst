@@ -1,2 +1,11 @@
+org/rogerthat/endpoints/FileEndpoint.class
+org/rogerthat/orm/income/IncomeCategory.class
+org/rogerthat/orm/Person.class
+org/rogerthat/orm/EntitySuperclassIdOnly.class
+org/rogerthat/orm/Transactions.class
+org/rogerthat/orm/Spendings.class
+org/rogerthat/orm/User.class
 META-INF/panache-archive.marker
-org/rogerthat/GreetingResource.class
+org/rogerthat/orm/CsvFiles.class
+org/rogerthat/orm/income/Income.class
+org/rogerthat/services/SharedCache.class

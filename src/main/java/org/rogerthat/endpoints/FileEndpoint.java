@@ -21,7 +21,8 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 
-public class FileUploadEndpoint {
+@Path("/rest/file")
+public class FileEndpoint {
 
 	@ConfigProperty(name = "csv.directory")
 	String csvDirectory;
@@ -41,6 +42,7 @@ public class FileUploadEndpoint {
 	@Transactional
 	public Response uploadFile(MultipartFormDataInput input, @QueryParam("userId") int userId) {
 
+		System.out.println("Hotiab A inceput");
 		String fileName = "";
 		String csvFileName = "";
 		Map<String, List<InputPart>> uploadForm = input.getFormDataMap();
@@ -64,8 +66,6 @@ public class FileUploadEndpoint {
 				MultivaluedMap<String, String> header = inputPart.getHeaders();
 				fileName = getFileName(header);
 				csvFileName = getSystemFileName();
-//				System.out.println("FileName:" + fileName);
-//				System.out.println("Asterisk File Name" + csvFileName);
 				//convert the uploaded file to inputstream
 				InputStream inputStream = inputPart.getBody(InputStream.class,null);
 
@@ -74,12 +74,13 @@ public class FileUploadEndpoint {
 				writeFile(bytes,csvDirectory + csvFileName);
 
 			} catch (IOException e) {
-//				e.printStackTrace();
+				e.printStackTrace();
 				return Response.status(500).build();
 			}
 
 		}
 
+		System.out.println(fileName);
 		CsvFiles csvFiles = new CsvFiles();
 		csvFiles.originalName = fileName;
 		csvFiles.changedName = csvFileName;
