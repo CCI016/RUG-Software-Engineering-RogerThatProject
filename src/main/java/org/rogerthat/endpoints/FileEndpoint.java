@@ -21,7 +21,8 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 
-public class FileUploadEndpoint {
+@Path("/rest/file")
+public class FileEndpoint {
 
 	@ConfigProperty(name = "csv.directory")
 	String csvDirectory;
@@ -47,15 +48,15 @@ public class FileUploadEndpoint {
 		List<InputPart> inputParts = uploadForm.get("uploadedFile");
 		User user;
 
-		try {
-			user = User.findById(userId);
-		} catch (Exception e) {
-			return Response.status(500).build();
-		}
+//		try {
+//			user = User.findById(userId);
+//		} catch (Exception e) {
+//			return Response.status(500).build();
+//		}
 
-		if (user == null) {
-			return Response.status(500).build();
-		}
+//		if (user == null) {
+//			return Response.status(500).build();
+//		}
 
 		for (InputPart inputPart : inputParts) {
 
@@ -64,8 +65,6 @@ public class FileUploadEndpoint {
 				MultivaluedMap<String, String> header = inputPart.getHeaders();
 				fileName = getFileName(header);
 				csvFileName = getSystemFileName();
-//				System.out.println("FileName:" + fileName);
-//				System.out.println("Asterisk File Name" + csvFileName);
 				//convert the uploaded file to inputstream
 				InputStream inputStream = inputPart.getBody(InputStream.class,null);
 
@@ -74,18 +73,19 @@ public class FileUploadEndpoint {
 				writeFile(bytes,csvDirectory + csvFileName);
 
 			} catch (IOException e) {
-//				e.printStackTrace();
+				e.printStackTrace();
 				return Response.status(500).build();
 			}
 
 		}
 
-		CsvFiles csvFiles = new CsvFiles();
-		csvFiles.originalName = fileName;
-		csvFiles.changedName = csvFileName;
-		csvFiles.user = user;
+		System.out.println(fileName);
+//		CsvFiles csvFiles = new CsvFiles();
+//		csvFiles.originalName = fileName;
+//		csvFiles.changedName = csvFileName;
+//		csvFiles.user = user;
 
-		csvFiles.persist();
+//		csvFiles.persist();
 
 		// After this we need to call somehow the parser but we should not block the thread;
 		return Response.status(200).build();
@@ -113,11 +113,12 @@ public class FileUploadEndpoint {
 	}
 
 	private String getSystemFileName() {
-		List<CsvFiles> files= CsvFiles.find("ORDER BY id DESC").list();
-		if (files.size() == 0) {
-			return (standardFileName + "1");
-		}
-		return (standardFileName + files.get(0).id + 1);
+		return "test.csv";
+//		List<CsvFiles> files= CsvFiles.find("ORDER BY id DESC").list();
+//		if (files.size() == 0) {
+//			return (standardFileName + "1");
+//		}
+//		return (standardFileName + files.get(0).id + 1);
 	}
 
 	/**

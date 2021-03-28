@@ -1,8 +1,9 @@
 package org.rogerthat.orm;
 
 import javax.persistence.Column;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import java.util.List;
+
 
 public class User extends EntitySuperclassIdOnly {
 

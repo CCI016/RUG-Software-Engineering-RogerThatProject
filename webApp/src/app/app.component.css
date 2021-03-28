@@ -63,10 +63,16 @@ nz-header {
   z-index: 2;
 }
 
-
+nz-content {
+  font-size: 18px;
+  margin: 24px;
+  height: 100%;
+}
 
 .inner-content {
-  background: #fff;
+  /* font-size: 18px; */
+  padding: 24px;
+  background: rgb(26, 26, 26);
   height: 100%;
 }
 

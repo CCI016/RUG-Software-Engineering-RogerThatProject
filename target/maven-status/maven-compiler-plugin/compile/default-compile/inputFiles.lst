@@ -1,1 +1,10 @@
-/Users/c.c.1/Desktop/RUG-Software-Engineering-RogerThatProject/src/main/java/org/rogerthat/GreetingResource.java
+/Users/c.c.1/Desktop/RUG-Software-Engineering-RogerThatProject/src/main/java/org/rogerthat/endpoints/FileEndpoint.java
+/Users/c.c.1/Desktop/RUG-Software-Engineering-RogerThatProject/src/main/java/org/rogerthat/orm/income/Income.java
+/Users/c.c.1/Desktop/RUG-Software-Engineering-RogerThatProject/src/main/java/org/rogerthat/orm/Spendings.java
+/Users/c.c.1/Desktop/RUG-Software-Engineering-RogerThatProject/src/main/java/org/rogerthat/orm/income/IncomeCategory.java
+/Users/c.c.1/Desktop/RUG-Software-Engineering-RogerThatProject/src/main/java/org/rogerthat/orm/Person.java
+/Users/c.c.1/Desktop/RUG-Software-Engineering-RogerThatProject/src/main/java/org/rogerthat/services/SharedCache.java
+/Users/c.c.1/Desktop/RUG-Software-Engineering-RogerThatProject/src/main/java/org/rogerthat/orm/User.java
+/Users/c.c.1/Desktop/RUG-Software-Engineering-RogerThatProject/src/main/java/org/rogerthat/orm/Transactions.java
+/Users/c.c.1/Desktop/RUG-Software-Engineering-RogerThatProject/src/main/java/org/rogerthat/orm/EntitySuperclassIdOnly.java
+/Users/c.c.1/Desktop/RUG-Software-Engineering-RogerThatProject/src/main/java/org/rogerthat/orm/CsvFiles.java
