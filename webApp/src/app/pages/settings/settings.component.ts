@@ -17,13 +17,6 @@ export class SettingsComponent implements OnInit {
     };
   
     ngOnInit(): void;
-    
-    submitForm(): void {
-      for (const i in this.validateForm.controls) {
-        this.validateForm.controls[i].markAsDirty();
-        this.validateForm.controls[i].updateValueAndValidity();
-      }
-    }
   
     updateConfirmValidator(): void {
       /** wait for refresh value */
