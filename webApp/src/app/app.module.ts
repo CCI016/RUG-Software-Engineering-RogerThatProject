@@ -23,6 +23,7 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzUploadModule } from 'ng-zorro-antd/upload';
 import { SettingsComponent } from './pages/settings/settings.component';
+import { RegisterComponent } from './pages/register/register.component';
 
 registerLocaleData(en);
 
@@ -34,6 +35,7 @@ registerLocaleData(en);
     ProfileComponent,
     StatusComponent,
     SettingsComponent,
+    RegisterComponent,
   ],
   imports: [
     BrowserModule,
