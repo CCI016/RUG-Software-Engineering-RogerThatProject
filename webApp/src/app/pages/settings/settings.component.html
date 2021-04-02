@@ -37,7 +37,7 @@
         [nzValidateStatus]="validateForm.controls['phoneNumber']"
         nzErrorTip="Please input your phone number!"
       >
-        <nz-input-group [nzAddOnBefore]="addOnBeforeTemplate">
+        <nz-input-group>
           <ng-template #addOnBeforeTemplate>
             <nz-select formControlName="phoneNumberPrefix" class="phone-select">
               <nz-option nzLabel="+31" nzValue="+31"></nz-option>

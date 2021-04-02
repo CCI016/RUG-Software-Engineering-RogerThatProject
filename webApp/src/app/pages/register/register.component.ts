@@ -1,9 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { first } from 'rxjs/operators';
-
-import { AccountService, AlertService } from '@app/_services';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import { NzFormTooltipIcon } from 'ng-zorro-antd/form';
 
 @Component({
   selector: 'app-register',
@@ -11,57 +8,34 @@ import { AccountService, AlertService } from '@app/_services';
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent implements OnInit {
-  form: FormGroup | undefined;
-  loading = false;
-  submitted = false;
+  validateForm!: FormGroup;
+  constructor(public fb: FormBuilder) {}
 
-  constructor(
-    private formBuilder: FormBuilder,
-    private route: ActivatedRoute,
-    private router: Router,
-    private accountService: AccountService,
-    private alertService: AlertService
-  ) { }
-
-  // tslint:disable-next-line:typedef
-  ngOnInit() {
-    this.form = this.formBuilder.group({
-      firstName: ['', Validators.required],
-      lastName: ['', Validators.required],
-      username: ['', Validators.required],
-      password: ['', [Validators.required, Validators.minLength(6)]]
+  ngOnInit(): void {
+    this.validateForm = this.fb.group({
+      email: [null, [Validators.email, Validators.required]],
+      password: [null, [Validators.required]],
+      checkPassword: [null, [Validators.required, this.confirmationValidator]],
     });
   }
-
-  // convenience getter for easy access to form fields
-  // tslint:disable-next-line:typedef
-  get f() { return this.form.controls; }
-
-  // tslint:disable-next-line:typedef
-  onSubmit() {
-    this.submitted = true;
-
-    // reset alerts on submit
-    this.alertService.clear();
-
-    // stop here if form is invalid
-    if (this.form.invalid) {
-      return;
+  submitForm(): void {
+    // tslint:disable-next-line:forin
+    for (const i in this.validateForm.controls) {
+      this.validateForm.controls[i].markAsDirty();
+      this.validateForm.controls[i].updateValueAndValidity();
     }
-
-    this.loading = true;
-    this.accountService.register(this.form.value)
-      .pipe(first())
-      .subscribe({
-        next: () => {
-          this.alertService.success('Registration successful', { keepAfterRouteChange: true });
-          this.router.navigate(['../login'], { relativeTo: this.route });
-        },
-        error: (error: any) => {
-          this.alertService.error(error);
-          this.loading = false;
-        }
-      });
+  }
+  updateConfirmValidator(): void {
+    /** wait for refresh value */
+    Promise.resolve().then(() => this.validateForm.controls.checkPassword.updateValueAndValidity());
   }
 
+  confirmationValidator = (control: FormControl): { [s: string]: boolean } => {
+    if (!control.value) {
+      return { required: true };
+    } else if (control.value !== this.validateForm.controls.password.value) {
+      return { confirm: true, error: true };
+    }
+    return {};
+  }
 }

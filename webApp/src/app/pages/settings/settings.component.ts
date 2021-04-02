@@ -15,7 +15,7 @@ export class SettingsComponent implements OnInit {
       type: 'info-circle',
       theme: 'twotone'
     };
-  
+
     constructor(private fb: FormBuilder) {}
 
     ngOnInit(): void {
@@ -27,14 +27,15 @@ export class SettingsComponent implements OnInit {
           phoneNumber: [null, [Validators.required]],
         });
       }
-  
+
     submitForm(): void {
+      // tslint:disable-next-line:forin
         for (const i in this.validateForm.controls) {
             this.validateForm.controls[i].markAsDirty();
             this.validateForm.controls[i].updateValueAndValidity();
         }
     }
-    
+
     updateConfirmValidator(): void {
         /** wait for refresh value */
         Promise.resolve().then(() => this.validateForm.controls.checkPassword.updateValueAndValidity());
