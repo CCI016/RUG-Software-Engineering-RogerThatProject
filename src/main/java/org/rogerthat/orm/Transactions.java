@@ -2,7 +2,6 @@ package org.rogerthat.orm;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.Table;
 import java.sql.Date;
 
@@ -10,8 +9,8 @@ import java.sql.Date;
 @Table(name = "transactions")
 public class Transactions extends EntitySuperclassIdOnly{
 
-	@Column(name = "date")
-	public Date date;
+	@Column(name = "date_time")
+	public Date dateTime;
 
 	@Column(name = "name")
 	public String name;
