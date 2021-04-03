@@ -1,7 +1,5 @@
 package org.rogerthat.orm;
 
-import org.rogerthat.orm.income.Income;
-
 import javax.persistence.*;
 
 @Entity
