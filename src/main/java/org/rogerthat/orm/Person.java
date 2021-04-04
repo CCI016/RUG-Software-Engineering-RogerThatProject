@@ -1,6 +1,12 @@
 package org.rogerthat.orm;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import java.util.List;
 
 @Entity
 @Table(name = "person")
@@ -26,4 +32,11 @@ public class Person extends EntitySuperclassIdOnly{
 //	@OneToMany
 //	@JoinColumn(nullable = false, name = "transactions")
 //	public Transactions transactions;
+
+	@OneToMany
+	@JoinTable(name = "transactions",
+			joinColumns = {@JoinColumn(name = "person_id")},
+			inverseJoinColumns = {@JoinColumn(name = "transaction_id")}
+	)
+	private List<Transactions> transactions;
 }
