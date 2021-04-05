@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
+
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NZ_I18N } from 'ng-zorro-antd/i18n';
@@ -22,6 +23,9 @@ import { NzGridModule } from 'ng-zorro-antd/grid';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzUploadModule } from 'ng-zorro-antd/upload';
+import { SettingsComponent } from './pages/settings/settings.component';
+import { RegisterComponent } from './pages/register/register.component';
+import {NzFormModule} from "ng-zorro-antd/form";
 
 registerLocaleData(en);
 
@@ -32,6 +36,8 @@ registerLocaleData(en);
     SignInComponent,
     ProfileComponent,
     StatusComponent,
+    SettingsComponent,
+    RegisterComponent,
   ],
   imports: [
     BrowserModule,
@@ -46,7 +52,8 @@ registerLocaleData(en);
     NzGridModule,
     NzButtonModule,
     NzIconModule,
-    NzUploadModule
+    NzUploadModule,
+    NzFormModule
   ],
   providers: [{ provide: NZ_I18N, useValue: en_US }],
   bootstrap: [AppComponent]
