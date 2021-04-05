@@ -64,11 +64,11 @@ public class CSVParser
                 statement.setString(5, incomeClassification);
                 statement.setDouble(6, amount);
 
-                statement.addBatch();
-                statement.executeBatch();
+                int i = statement.executeUpdate();
             }
             
-            // Check if the file exists already in the database, by means of timestamps
+            // TODO: Check if the file exists already in the database, by means of timestamps
+            
             fileReader.close();
             
             connection.commit();
