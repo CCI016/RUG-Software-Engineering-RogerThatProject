@@ -48,23 +48,26 @@ public class CSVParser
             // In case the header line exists
             // line = fileReader.readLine()
 
+
             //Read the file line by line
             while ((line = fileReader.readLine()) != null) 
             {
                 //Get all tokens available in line
                 String[] tokens = line.split(",");
-                for(String token : tokens)
-                {
-                    //Print all tokens
-                    System.out.println(thread.getId() + token);
-                }
-            }
+                
+                // TODO: Add the parameters to the statement
+                // Get paramaters of a transaction from token list
 
+
+                statement.addBatch();
+                statement.executeBatch();
+            }
+            
+            // Check if the file exists already in the database, by means of timestamps
+            fileReader.close();
+            
             connection.commit();
             connection.close();
-            // Check if the file exists already in the database, by using special id
-            
-            // Open connection with the database and commit the tokens list into it
         } 
         catch (Exception e) {
             e.printStackTrace();
