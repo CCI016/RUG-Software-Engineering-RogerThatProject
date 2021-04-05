@@ -40,24 +40,29 @@ public class CSVParser
             connection = DriverManager.getConnection(jdbcURL, username, password);
             connection.setAutoCommit(false);
             
-
-            // TODO: Finish Query
-            String sql = "INSERT INTO ...";
+            String sql = "INSERT INTO transactions (date, name, category, spending_classification, income_classification, amount) VALUES (?, ?, ?, ?, ?, ?)";
             PreparedStatement statement = connection.prepareStatement(sql);
-            
-            // In case the header line exists
-            // line = fileReader.readLine()
-
 
             //Read the file line by line
             while ((line = fileReader.readLine()) != null) 
             {
                 //Get all tokens available in line
                 String[] tokens = line.split(",");
-                
-                // TODO: Add the parameters to the statement
-                // Get paramaters of a transaction from token list
 
+                // Get paramaters of a transaction from token list
+                Date date = tokens[0];
+                String name = tokens[1];
+                TransactionCategory transactionCategory = tokens[2];
+                SpendingClassification spendingClassification = tokens[3];
+                IncomeClassification incomeClassification = tokens[4];
+                double amount = tokens[5];
+
+                statement.setString(1, date);
+                statement.setString(2, name);
+                statement.setString(3, transactionCategory);
+                statement.setString(4, spendingClassification);
+                statement.setString(5, incomeClassification);
+                statement.setDouble(6, amount);
 
                 statement.addBatch();
                 statement.executeBatch();
