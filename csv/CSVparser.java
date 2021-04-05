@@ -50,11 +50,11 @@ public class CSVParser
                 String[] tokens = line.split(",");
 
                 // Get paramaters of a transaction from token list
-                Date date = tokens[0];
+                String date = tokens[0];
                 String name = tokens[1];
-                TransactionCategory transactionCategory = tokens[2];
-                SpendingClassification spendingClassification = tokens[3];
-                IncomeClassification incomeClassification = tokens[4];
+                String transactionCategory = tokens[2];
+                String spendingClassification = tokens[3];
+                String incomeClassification = tokens[4];
                 double amount = tokens[5];
 
                 statement.setString(1, date);
