@@ -398,3 +398,4 @@ $RECYCLE.BIN/
 ObjectStore
 webapp/yarn.lock
 .checkstyle
+*.lst
