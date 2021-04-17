@@ -7,5 +7,8 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "transactions")
 public class Transactions extends EntitySuperclassIdOnly{
+    
+    public String dateTime;
 
+    public String name;
 }
