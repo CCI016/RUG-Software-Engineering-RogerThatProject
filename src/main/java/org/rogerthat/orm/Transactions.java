@@ -18,8 +18,8 @@ public class Transactions extends EntitySuperclassIdOnly{
 	@Column(name = "category")
 	public TransactionCategory transactionCategory;
 
-	@Column(name = "spending_classification")
-	public SpendingClassification spendingClassification;
+//	@Column(name = "spending_classification")
+//	public SpendingClassification spendingClassification;
 
 	@Column(name = "income_classification")
 	public IncomeClassification incomeClassification;
