@@ -90,6 +90,7 @@ public class FileEndpoint {
 		// After this we need to call somehow the parser but we should not block the thread;
 		CSVParser parser = new CSVParser();
 		parser.parse(fileName, userId);
+
 		return Response.status(200).build();
 
 	}

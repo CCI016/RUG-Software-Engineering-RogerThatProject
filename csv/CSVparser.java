@@ -28,22 +28,27 @@ public class CSVParser
                 //Get all tokens available in line
                 String[] tokens = line.split(",");
 
-                // Get paramaters of a transaction from token list
-                String date = tokens[0];
-                String name = tokens[1];
-                String transactionCategory = tokens[2];
-                String spendingClassification = tokens[3];
-                String incomeClassification = tokens[4];
-                double amount = tokens[5];
-            
-                Transaction transactions = new Transaction();
-                transactions.name = name;
-                transactions.date = date;
-                
-                transactions.persist();
+                // Create an instance of a transaction
+                Transaction transaction = new Transaction();
+
+                // NOTE: These values are not going to work with SNS bank's CSV files
+                // This would only work with ING transactions CSV viles
+                // Pass all values to the transaction instance
+                transaction.dateTime = tokens[0];
+                transaction.name = tokens[1];
+                transaction.accountFrom = tokens[2];
+                transactions.accountTo = tokens[3];
+                transaction.code = tokens[4];
+                transaction.inOrOut = tokens [5];
+                transactions.amount = tokens[6];
+                transactions.transactionType = tokens[7];
+                transaction.notes = tokens [8];
+
+                // Persist the instance with added values
+                transaction.persist();
             }
             
-            // TODO: Check if the file exists already in the database, by means of timestamps
+            // TODO: Check if the file exists already in the database, by means of timestamps and userId
         } 
         catch (Exception e) {
             e.printStackTrace();
