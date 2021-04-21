@@ -1,3 +1,0 @@
-Here is the directory that will accept CSV files and parse them into transaction objects and sent to the database
-
-NOTE: It only accepts ING transactions CSV's

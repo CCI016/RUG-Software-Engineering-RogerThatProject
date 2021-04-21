@@ -2,30 +2,26 @@ package org.rogerthat.services;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.io.IOException;
-import org.hibernate.*;
 import org.rogerthat.orm.Transactions;
 
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 public class CSVParser  {
 
-    @ConfigProperty(name = "csv.directory")
-    String csvDirectory;
-
     public CSVParser() {
     }
 
     public void parse(String fileToParse, Long userID) {
         BufferedReader fileReader = null;
-        // Thread thread = new Thread();
+        // Thread thread = new Thread()
+
 
         userID = 1L;
 
         try {
             String line = "";
             //Create the file reader
-            fileReader = new BufferedReader(new FileReader(csvDirectory + fileToParse));
+            fileReader = new BufferedReader(new FileReader(fileToParse));
 
             // Line counter for testing
             int count = 0;
@@ -66,20 +62,15 @@ public class CSVParser  {
                 System.out.println("Transaction" + count + ": notes = " + transaction.notes);
                 System.out.println("\n");
 
+
                 // Increment line counter
                 count += 1;
             }
+            fileReader.close();
             // TODO: Check if the file exists already in the database, by means of timestamps and userId
         }
         catch (Exception e) {
             e.printStackTrace();
-        }
-        finally {
-            try {
-                fileReader.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
     }
 }

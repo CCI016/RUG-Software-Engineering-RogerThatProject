@@ -4,7 +4,6 @@ import org.apache.commons.io.IOUtils;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.jboss.resteasy.plugins.providers.multipart.InputPart;
 import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
-import org.rogerthat.orm.CsvFiles;
 import org.rogerthat.orm.User;
 import org.rogerthat.services.CSVParser;
 
@@ -80,7 +79,6 @@ public class FileEndpoint {
 
 		}
 
-		System.out.println(fileName);
 //		CsvFiles csvFiles = new CsvFiles();
 //		csvFiles.originalName = fileName;
 //		csvFiles.changedName = csvFileName;
@@ -90,7 +88,7 @@ public class FileEndpoint {
 
 		// After this we need to call somehow the parser but we should not block the thread;
 		CSVParser parser = new CSVParser();
-		parser.parse(fileName, userId);
+		parser.parse(csvDirectory + csvFileName, userId);
 
 		return Response.status(200).build();
 
