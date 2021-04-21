@@ -4,8 +4,8 @@ import org.apache.commons.io.IOUtils;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.jboss.resteasy.plugins.providers.multipart.InputPart;
 import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
-import org.rogerthat.orm.CsvFiles;
 import org.rogerthat.orm.User;
+import org.rogerthat.services.CSVParser;
 
 import javax.transaction.Transactional;
 import javax.ws.rs.Consumes;
@@ -40,7 +40,7 @@ public class FileEndpoint {
 	@Path("/upload")
 	@Consumes("multipart/form-data")
 	@Transactional
-	public Response uploadFile(MultipartFormDataInput input, @QueryParam("userId") int userId) {
+	public Response uploadFile(MultipartFormDataInput input, @QueryParam("userId") Long userId) {
 
 		String fileName = "";
 		String csvFileName = "";
@@ -79,7 +79,6 @@ public class FileEndpoint {
 
 		}
 
-		System.out.println(fileName);
 //		CsvFiles csvFiles = new CsvFiles();
 //		csvFiles.originalName = fileName;
 //		csvFiles.changedName = csvFileName;
@@ -88,6 +87,9 @@ public class FileEndpoint {
 //		csvFiles.persist();
 
 		// After this we need to call somehow the parser but we should not block the thread;
+		CSVParser parser = new CSVParser();
+		parser.parse(csvDirectory + csvFileName, userId);
+
 		return Response.status(200).build();
 
 	}
