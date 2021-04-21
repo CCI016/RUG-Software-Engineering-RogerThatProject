@@ -12,7 +12,7 @@ import java.sql.Date;
 public class Transactions extends EntitySuperclassIdOnly{
 
 	@Column(name = "date_time")
-	public Date dateTime;
+	public String dateTime;
 
 	@Column(name = "name")
 	public String name;
@@ -30,7 +30,7 @@ public class Transactions extends EntitySuperclassIdOnly{
 	public String inOrOut;
 
 	@Column(name = "amount")
-	public double amount;
+	public String amount;
 
 	@Column(name = "transaction_type")
 	public String transactionType;
