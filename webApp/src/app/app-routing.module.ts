@@ -8,7 +8,7 @@ import { WelcomeComponent } from './pages/welcome/welcome.component';
 import { SettingsComponent } from './pages/settings/settings.component';
 import {RegisterComponent} from './pages/register/register.component';
 import {LoginComponent} from './pages/login/login.component';
-import { AuthGuard } from './_helpers';
+import { AuthGuard } from './_helpers/auth.guard';
 
 
 const routes: Routes = [
