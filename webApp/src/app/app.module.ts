@@ -1,7 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NZ_I18N } from 'ng-zorro-antd/i18n';
@@ -9,7 +8,7 @@ import { en_US } from 'ng-zorro-antd/i18n';
 import { registerLocaleData } from '@angular/common';
 import en from '@angular/common/locales/en';
 import { ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { IconsProviderModule } from './icons-provider.module';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
@@ -27,6 +26,12 @@ import { SettingsComponent } from './pages/settings/settings.component';
 import { RegisterComponent } from './pages/register/register.component';
 import {NzFormModule} from "ng-zorro-antd/form";
 
+// used to create fake backend
+import { fakeBackendProvider } from './_helpers';
+import { LoginComponent } from './pages/login/login.component';
+import { JwtInterceptor, ErrorInterceptor } from './_helpers';
+
+
 registerLocaleData(en);
 
 @NgModule({
@@ -38,6 +43,7 @@ registerLocaleData(en);
     StatusComponent,
     SettingsComponent,
     RegisterComponent,
+    LoginComponent,
   ],
   imports: [
     BrowserModule,
@@ -53,9 +59,13 @@ registerLocaleData(en);
     NzButtonModule,
     NzIconModule,
     NzUploadModule,
-    NzFormModule
+    NzFormModule,
   ],
-  providers: [{ provide: NZ_I18N, useValue: en_US }],
+  providers: [{ provide: NZ_I18N, useValue: en_US }, { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+
+    // provider used to create fake backend
+    fakeBackendProvider],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

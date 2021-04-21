@@ -7,17 +7,20 @@ import { StatusComponent } from './pages/status/status.component';
 import { WelcomeComponent } from './pages/welcome/welcome.component';
 import { SettingsComponent } from './pages/settings/settings.component';
 import {RegisterComponent} from './pages/register/register.component';
+import {LoginComponent} from './pages/login/login.component';
+import { AuthGuard } from './_helpers';
 
 
 const routes: Routes = [
-  { path: '', pathMatch: 'full', redirectTo: 'welcome' },
+  { path: '', pathMatch: 'full', redirectTo: 'welcome', canActivate: [AuthGuard] },
   { path: 'welcome', component: WelcomeComponent},
   { path: 'contact', component: ContactComponent},
   { path: 'sign-in', component: SignInComponent},
   { path: 'profile', component: ProfileComponent},
   { path: 'status', component: StatusComponent},
   { path: 'settings', component : SettingsComponent},
-  { path: 'register', component : RegisterComponent}
+  { path: 'register', component : RegisterComponent},
+  { path: 'login', component: LoginComponent }
 ];
 
 @NgModule({
