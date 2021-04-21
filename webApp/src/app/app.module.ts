@@ -28,7 +28,7 @@ import {NzFormModule} from 'ng-zorro-antd/form';
 
 // used to create fake backend
 import { fakeBackendProvider } from './_helpers/fake-backend';
- import { LoginComponent } from './pages/login/login.component';
+import { LoginComponent } from './pages/login/login.component';
 import { ErrorInterceptor } from './_helpers/error.interceptor';
 import { JwtInterceptor } from './_helpers/jwt.interceptor';
 

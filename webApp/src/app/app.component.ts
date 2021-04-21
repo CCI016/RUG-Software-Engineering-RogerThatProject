@@ -10,7 +10,7 @@ import { User } from './_models/user';
 })
 export class AppComponent {
   isCollapsed = false;
-  currentUser: User;
+  currentUser : User;
   x : number;
     constructor(
         private router: Router,
