@@ -1,69 +1,69 @@
-<nz-layout class="app-layout">
-  <nz-sider class="menu-sidebar"
-            nzCollapsible
-            nzWidth="256px"
-            nzBreakpoint="md"
-            [(nzCollapsed)]="isCollapsed"
-            [nzTrigger]="null">
-    <div class="sidebar-logo">
-      <a href="" target="_blank">
-        <img src="assets/images/logo.png">
-        <h1>RogerThat</h1>
-      </a>
-    </div>
-    <ul nz-menu nzTheme="dark" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
-      <li nz-submenu nzOpen nzTitle="My Profile" nzIcon="user">
-        <ul>
-          <li nz-menu-item nzMatchRouter>
-            <i nz-icon nzType="idcard" nzTheme="outline"></i>
-            <a routerLink="/profile">My information</a>
-          </li>
-          <li nz-menu-item>
-            <i nz-icon nzType="setting" nzTheme="outline"></i>
-            <a routerLink="/settings">Settings</a>
-          </li>
-          <li nz-menu-item>
-            <i nz-icon nzType="import" nzTheme="outline"></i>
-            <a routerLink="/profile">Log Out</a>
-          </li>
-        </ul>
-      </li>
-      <li nz-menu-item>
-        <a routerLink = "status">
-          <i nz-icon nzType="line-chart" nzTheme="outline"></i>
-          <span>Status</span>
-        </a>
-      </li>
-      <li nz-menu-item>
-        <a routerLink = "sign-in">
-          <i nz-icon nzType="line-chart" nzTheme="outline"></i>
-          <span>Sign in</span>
-        </a>
-      </li>
-      <li nz-menu-item>
-        <a routerLink = "register">
-          <i nz-icon nzType="line-chart" nzTheme="outline"></i>
-          <span>Register</span>
-        </a>
-      </li>
-    </ul>
-  </nz-sider>
-  <nz-layout>
-    <nz-header>
-      <div class="app-header">
-        <span class="header-trigger" (click)="isCollapsed = !isCollapsed">
-            <i class="trigger"
-               nz-icon
-               [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
-            ></i>
-        </span>
-      </div>
-    </nz-header>
-    <nz-content>
-      <div class="inner-content">
-        <router-outlet></router-outlet>
-      </div>
-    </nz-content>
-  </nz-layout>
-</nz-layout>
-
+﻿<!-- main app container -->
+    <nz-layout class="app-layout">
+        <nz-sider class="menu-sidebar"
+                  nzCollapsible
+                  nzWidth="256px"
+                  nzBreakpoint="md"
+                  [(nzCollapsed)]="isCollapsed"
+                  [nzTrigger]="null">
+          <div class="sidebar-logo">
+            <a href="" target="_blank">
+              <img src="assets/images/logo.png">
+              <h1>RogerThat</h1>
+            </a>
+          </div>
+          <ul nz-menu nzTheme="dark" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
+            <li nz-submenu nzOpen nzTitle="My Profile" nzIcon="user">
+              <ul>
+                <li nz-menu-item nzMatchRouter>
+                  <i nz-icon nzType="idcard" nzTheme="outline"></i>
+                  <a routerLink="/profile">My information</a>
+                </li>
+                <li nz-menu-item>
+                  <i nz-icon nzType="setting" nzTheme="outline"></i>
+                  <a routerLink="/settings">Settings</a>
+                </li>
+                <li nz-menu-item>
+                  <i nz-icon nzType="import" nzTheme="outline"></i>
+                  <a routerLink="/profile" (click)="logout()">Log Out</a>
+                </li>
+              </ul>
+            </li>
+            <li nz-menu-item>
+              <a routerLink = "status">
+                <i nz-icon nzType="line-chart" nzTheme="outline"></i>
+                <span>Status</span>
+              </a>
+            </li>
+            <li nz-menu-item>
+              <a routerLink = "sign-in">
+                <i nz-icon nzType="line-chart" nzTheme="outline"></i>
+                <span>Sign in</span>
+              </a>
+            </li>
+            <li nz-menu-item>
+              <a routerLink = "register">
+                <i nz-icon nzType="line-chart" nzTheme="outline"></i>
+                <span>Register</span>
+              </a>
+            </li>
+          </ul>
+        </nz-sider>
+        <nz-layout>
+          <nz-header>
+            <div class="app-header">
+              <span class="header-trigger" (click)="isCollapsed = !isCollapsed">
+                  <i class="trigger"
+                     nz-icon
+                     [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
+                  ></i>
+              </span>
+            </div>
+          </nz-header>
+          <nz-content>
+            <div class="inner-content">
+              <router-outlet></router-outlet>
+            </div>
+          </nz-content>
+        </nz-layout>
+      </nz-layout>
