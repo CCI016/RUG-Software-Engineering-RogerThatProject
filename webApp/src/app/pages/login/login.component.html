@@ -1,0 +1,37 @@
+<nz-header>
+    <h2> Sign in
+    </h2>
+  </nz-header>
+  <div class="col-md-6 offset-md-3 mt-5">
+      <div class="alert alert-info">
+          Username: test<br />
+          Password: test
+      </div>
+      <div class="card">
+          <div class="card-body">
+              <form nz-form [formGroup]="loginForm" (ngSubmit)="onSubmit()" >
+                  <div class="form-group">
+                      <input type="text" formControlName="username" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.username.errors }" placeholder="Username"/>
+                      <div *ngIf="submitted && f.username.errors" class="invalid-feedback">
+                          <div *ngIf="f.username.errors.required">Username is required</div>
+                      </div>
+                  </div>
+                  <div class="form-group">
+                      <input type="password" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.password.errors }" placeholder="Password" />
+                      <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+                          <div *ngIf="f.password.errors.required">Password is required</div>
+                      </div>
+                  </div>
+                  <button [disabled]="loading" nz-button class="login-form-button login-form-margin" [nzType]="'primary'">
+                      <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                      Login
+                  </button>
+                Or <a routerLink = "register"> register now! </a>
+                <div nz-col [nzSpan]="12">
+                  <a class="login-form-forgot">Forgot password?</a>
+                </div>
+                  <div *ngIf="error" class="alert alert-danger mt-3 mb-0">{{error}}</div>
+              </form>
+          </div>
+      </div>
+  </div>
