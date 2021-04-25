@@ -38,5 +38,5 @@ public class Person extends EntitySuperclassIdOnly{
 			joinColumns = {@JoinColumn(name = "person_id")},
 			inverseJoinColumns = {@JoinColumn(name = "transaction_id")}
 	)
-	private List<Transactions> transactions;
+	public List<Transactions> transactions;
 }

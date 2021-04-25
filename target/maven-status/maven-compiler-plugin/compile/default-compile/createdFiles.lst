@@ -5,7 +5,7 @@ org/rogerthat/orm/Transactions.class
 org/rogerthat/orm/User.class
 org/rogerthat/endpoints/FileEndpoint.class
 org/rogerthat/orm/EntitySuperclassIdOnly.class
-org/rogerthat/orm/SpendingsCatogories.class
+org/rogerthat/orm/SpendingCategories.class
 META-INF/panache-archive.marker
 org/rogerthat/services/CSVParser.class
 org/rogerthat/orm/CsvFiles.class

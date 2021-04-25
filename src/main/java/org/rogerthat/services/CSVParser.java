@@ -1,20 +1,42 @@
 package org.rogerthat.services;
 
+import java.beans.Transient;
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.rogerthat.orm.Person;
+import org.rogerthat.orm.TransactionCategory;
 import org.rogerthat.orm.Transactions;
 
 import org.eclipse.microprofile.config.inject.ConfigProperty;
+import org.rogerthat.orm.User;
+
+import javax.transaction.Transactional;
 
 public class CSVParser  {
 
+    List<Transactions> transactions;
+
     public CSVParser() {
+        this.transactions = new ArrayList<>();
     }
 
+    @Transactional
     public void parse(String fileToParse, Long userID) {
-        BufferedReader fileReader = null;
-        // Thread thread = new Thread()
+        List<Transactions> newTransactions = new ArrayList<>();
 
+        BufferedReader fileReader = null;
+
+        User user = User.findById(userID);
+
+        if (user == null) {
+            return;
+        }
+
+        Person person = user.person;
+        this.transactions = person.transactions;
 
         userID = 1L;
 
@@ -48,29 +70,46 @@ public class CSVParser  {
                 transaction.notes = tokens[8];
 
                 // Persist the instance with added values
-                //transaction.persist();
+                newTransactions.add(transaction);
 
                 // Testing if the parser works
-                System.out.println("Transaction" + count + ": dateTime = " + transaction.dateTime);
-                System.out.println("Transaction" + count + ": name = " + transaction.name);
-                System.out.println("Transaction" + count + ": accountFrom = " + transaction.accountFrom);
-                System.out.println("Transaction" + count + ": accountTo = " + transaction.accountTo);
-                System.out.println("Transaction" + count + ": code = " + transaction.code);
-                System.out.println("Transaction" + count + ": inOrOut = " + transaction.inOrOut);
-                System.out.println("Transaction" + count + ": amount = " + transaction.amount);
-                System.out.println("Transaction" + count + ": transactionType = " + transaction.transactionType);
-                System.out.println("Transaction" + count + ": notes = " + transaction.notes);
-                System.out.println("\n");
-
 
                 // Increment line counter
                 count += 1;
             }
             fileReader.close();
+
             // TODO: Check if the file exists already in the database, by means of timestamps and userId
         }
         catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+
+    /**
+     *
+     * @param oldTransactions The list of previous transactions of this user
+     * @param newTransactions The list of incoming transactions for this user
+     */
+    @Transactional
+    public void checkForDuplicates(List<Transactions> oldTransactions, List<Transactions> newTransactions) {
+        if (!oldTransactions.isEmpty()) { // if there are transactions we will check the duplicates by the time stamps.
+            List<String> oldTimeStamps = new ArrayList<>();
+
+            for (Transactions transaction : oldTransactions) {
+                oldTimeStamps.add(transaction.dateTime);
+            }
+
+            for (Transactions transaction : newTransactions) {
+                if (!oldTimeStamps.contains(transaction.dateTime)) {
+                    transaction.persist();
+                }
+            }
+        } else {
+            for (Transactions transaction : newTransactions) {
+                transaction.persist();
+            }
         }
     }
 }

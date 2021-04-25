@@ -4,6 +4,7 @@ import org.apache.commons.io.IOUtils;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.jboss.resteasy.plugins.providers.multipart.InputPart;
 import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
+import org.rogerthat.orm.CsvFiles;
 import org.rogerthat.orm.User;
 import org.rogerthat.services.CSVParser;
 
@@ -48,15 +49,17 @@ public class FileEndpoint {
 		List<InputPart> inputParts = uploadForm.get("uploadedFile");
 		User user;
 
-//		try {
-//			user = User.findById(userId);
-//		} catch (Exception e) {
-//			return Response.status(500).build();
-//		}
+		userId = 1L;
 
-//		if (user == null) {
-//			return Response.status(500).build();
-//		}
+		try {
+			user = User.findById(userId);
+		} catch (Exception e) {
+			return Response.status(500).build();
+		}
+
+		if (user == null) {
+			return Response.status(500).build();
+		}
 
 		for (InputPart inputPart : inputParts) {
 
@@ -79,12 +82,12 @@ public class FileEndpoint {
 
 		}
 
-//		CsvFiles csvFiles = new CsvFiles();
-//		csvFiles.originalName = fileName;
-//		csvFiles.changedName = csvFileName;
-//		csvFiles.user = user;
+		CsvFiles csvFiles = new CsvFiles();
+		csvFiles.originalName = fileName;
+		csvFiles.changedName = csvFileName;
+		csvFiles.user = user;
 
-//		csvFiles.persist();
+		csvFiles.persist();
 
 		// After this we need to call somehow the parser but we should not block the thread;
 		CSVParser parser = new CSVParser();
