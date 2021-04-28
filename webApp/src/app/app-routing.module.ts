@@ -11,14 +11,17 @@ import {RegisterComponent} from './pages/register/register.component';
 import { HomeComponent } from './pages/home';
 import { LoginComponent } from './pages/login';
 import { AuthGuard } from './_helpers';
+import {AppComponent} from '@app/app.component';
 
 const routes: Routes = [
-    { path: '', component: HomeComponent, canActivate: [AuthGuard] },
-    { path: 'login', component: LoginComponent },
-    { path: 'welcome', component: WelcomeComponent},
+//  { path: '', redirectTo: '/login', pathMatch: 'full' },
+  { path: '', component: AppComponent, canActivate: [AuthGuard] },
+  {path: 'login', component: LoginComponent},
+ // {path: 'profile', component: ProfileComponent, canActivate: [AuthGuard]},
+  { path: 'welcome', component: WelcomeComponent},
+  { path: 'profile', component: ProfileComponent},
     { path: 'contact', component: ContactComponent},
     { path: 'sign-in', component: SignInComponent},
-    { path: 'profile', component: ProfileComponent},
     { path: 'status', component: StatusComponent},
     { path: 'settings', component : SettingsComponent},
     { path: 'register', component : RegisterComponent},
