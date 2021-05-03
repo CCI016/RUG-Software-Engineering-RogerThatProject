@@ -9,5 +9,6 @@ org/rogerthat/orm/SpendingCategories.class
 META-INF/panache-archive.marker
 org/rogerthat/services/CSVParser.class
 org/rogerthat/orm/CsvFiles.class
+org/rogerthat/services/Analyzer.class
 org/rogerthat/services/SharedCache.class
 org/rogerthat/orm/IncomeClassification.class

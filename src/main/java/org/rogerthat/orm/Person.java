@@ -34,7 +34,7 @@ public class Person extends EntitySuperclassIdOnly{
 //	public Transactions transactions;
 
 	@OneToMany
-	@JoinTable(name = "transactions",
+	@JoinTable(name = "person_transactions",
 			joinColumns = {@JoinColumn(name = "person_id")},
 			inverseJoinColumns = {@JoinColumn(name = "transaction_id")}
 	)

@@ -118,12 +118,11 @@ public class FileEndpoint {
 	}
 
 	private String getSystemFileName() {
-		return "test.csv";
-//		List<CsvFiles> files= CsvFiles.find("ORDER BY id DESC").list();
-//		if (files.size() == 0) {
-//			return (standardFileName + "1");
-//		}
-//		return (standardFileName + files.get(0).id + 1);
+		List<CsvFiles> files= CsvFiles.find("ORDER BY id DESC").list();
+		if (files.size() == 0) {
+			return (standardFileName + "1");
+		}
+		return (standardFileName + (files.get(0).id + 1L));
 	}
 
 	/**

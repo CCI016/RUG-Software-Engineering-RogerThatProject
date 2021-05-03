@@ -55,7 +55,7 @@ CREATE TABLE `person` (
   `first_name` varchar(255) NOT NULL,
   `last_name` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -64,7 +64,7 @@ CREATE TABLE `person` (
 
 LOCK TABLES `person` WRITE;
 /*!40000 ALTER TABLE `person` DISABLE KEYS */;
-INSERT INTO `person` VALUES (1,19,'Alan','Demort'),(2,50,'Iurii','Abramov');
+INSERT INTO `person` VALUES (1,20,'Alex','Ghiba');
 /*!40000 ALTER TABLE `person` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -111,13 +111,7 @@ CREATE TABLE `transactions` (
   `notes` varchar(255) DEFAULT NULL,
   `category` int DEFAULT NULL,
   `transaction_type` varchar(255) DEFAULT NULL,
-  `person_id` bigint NOT NULL,
-  `transaction_id` bigint NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `UK_6plyfbm3wy6ds7hongoml5xbk` (`transaction_id`),
-  KEY `FK371m9a9l767st0feor2sb5u90` (`person_id`),
-  CONSTRAINT `FK371m9a9l767st0feor2sb5u90` FOREIGN KEY (`person_id`) REFERENCES `person` (`id`),
-  CONSTRAINT `FKt454j0yivnnn0mm9qab6bv0c0` FOREIGN KEY (`transaction_id`) REFERENCES `transactions` (`id`)
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -146,7 +140,7 @@ CREATE TABLE `users` (
   PRIMARY KEY (`id`),
   KEY `FKd21kkcigxa21xuby5i3va9ncs` (`person_id`),
   CONSTRAINT `FKd21kkcigxa21xuby5i3va9ncs` FOREIGN KEY (`person_id`) REFERENCES `person` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -155,7 +149,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'test@gmail.com','alan2001','alan2001',1),(2,'test2@gmail.com','iurii1','iurii1',2);
+INSERT INTO `users` VALUES (1,'2@gmail.com','test','sadsad',1);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -172,4 +166,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-04-25 15:53:39
+-- Dump completed on 2021-05-03 19:22:21

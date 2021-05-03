@@ -8,7 +8,7 @@ import javax.persistence.*;
 public class User extends EntitySuperclassIdOnly {
 
 	@OneToOne
-	@JoinColumn(nullable = false, name = "person_id")
+	@JoinColumn(name = "person_id", nullable = false)
 	public Person person;
 
 	@Column(nullable = false, name = "email")

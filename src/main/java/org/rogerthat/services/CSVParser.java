@@ -1,16 +1,13 @@
 package org.rogerthat.services;
 
-import java.beans.Transient;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.rogerthat.orm.Person;
-import org.rogerthat.orm.TransactionCategory;
 import org.rogerthat.orm.Transactions;
 
-import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.rogerthat.orm.User;
 
 import javax.transaction.Transactional;
@@ -29,6 +26,8 @@ public class CSVParser  {
 
         BufferedReader fileReader = null;
 
+        userID = 1L;
+
         User user = User.findById(userID);
 
         if (user == null) {
@@ -37,8 +36,6 @@ public class CSVParser  {
 
         Person person = user.person;
         this.transactions = person.transactions;
-
-        userID = 1L;
 
         try {
             String line = "";
@@ -50,35 +47,39 @@ public class CSVParser  {
 
             //Read the file line by line
             while ((line = fileReader.readLine()) != null) {
-                //Get all tokens available in line
-                String[] tokens = line.split(",");
+                if (count != 0) {
 
-                // Create an instance of a transaction
-                Transactions transaction = new Transactions();
+                    //Get all tokens available in line
+                    String[] tokens = line.split(",");
 
-                // NOTE: These values are not going to work with SNS bank's CSV files
-                // This would only work with ING transactions CSV viles
-                // Pass all values to the transaction instance
-                transaction.dateTime = tokens[0];
-                transaction.name = tokens[1];
-                transaction.accountFrom = tokens[2];
-                transaction.accountTo = tokens[3];
-                transaction.code = tokens[4];
-                transaction.inOrOut = tokens[5];
-                transaction.amount = tokens[6];
-                transaction.transactionType = tokens[7];
-                transaction.notes = tokens[8];
+                    // Create an instance of a transaction
+                    Transactions transaction = new Transactions();
 
-                // Persist the instance with added values
-                newTransactions.add(transaction);
+                    // NOTE: These values are not going to work with SNS bank's CSV files
+                    // This would only work with ING transactions CSV viles
+                    // Pass all values to the transaction instance
+                    transaction.dateTime = tokens[0];
+                    transaction.name = tokens[1];
+                    transaction.accountFrom = tokens[2];
+                    transaction.accountTo = tokens[3];
+                    transaction.code = tokens[4];
+                    transaction.inOrOut = tokens[5];
+                    transaction.amount = tokens[6];
+                    transaction.transactionType = tokens[7];
+                    transaction.notes = tokens[8];
 
-                // Testing if the parser works
+                    // Persist the instance with added values
+                    newTransactions.add(transaction);
 
-                // Increment line counter
+                    // Testing if the parser works
+
+                    // Increment line counter
+                }
                 count += 1;
             }
             fileReader.close();
 
+            checkForDuplicates(this.transactions, newTransactions, person);
             // TODO: Check if the file exists already in the database, by means of timestamps and userId
         }
         catch (Exception e) {
@@ -93,7 +94,7 @@ public class CSVParser  {
      * @param newTransactions The list of incoming transactions for this user
      */
     @Transactional
-    public void checkForDuplicates(List<Transactions> oldTransactions, List<Transactions> newTransactions) {
+    public void checkForDuplicates(List<Transactions> oldTransactions, List<Transactions> newTransactions, Person person) {
         if (!oldTransactions.isEmpty()) { // if there are transactions we will check the duplicates by the time stamps.
             List<String> oldTimeStamps = new ArrayList<>();
 
@@ -103,13 +104,28 @@ public class CSVParser  {
 
             for (Transactions transaction : newTransactions) {
                 if (!oldTimeStamps.contains(transaction.dateTime)) {
+//                    transaction = clasifyTransaction(transaction);
+
+                    person.transactions.add(transaction);
                     transaction.persist();
                 }
             }
         } else {
             for (Transactions transaction : newTransactions) {
+//                transaction = clasifyTransaction(transaction);
+                person.transactions.add(transaction);
                 transaction.persist();
             }
         }
+        Analyzer analyzer = new Analyzer(person.id, person);
+        analyzer.analyze();
+
+
     }
+
+//    private Transactions clasifyTransaction(Transactions transaction) {
+//        if (transaction.notes == "\"Betaalautomaat\"") {
+//            // here the transcation type will become spendings
+//        }
+//    }
 }
