@@ -14,12 +14,10 @@ import { AuthGuard } from './_helpers';
 import {AppComponent} from '@app/app.component';
 
 const routes: Routes = [
-//  { path: '', redirectTo: '/login', pathMatch: 'full' },
-  { path: '', component: AppComponent, canActivate: [AuthGuard] },
+   { path: '', redirectTo: '/profile', pathMatch: 'full'},
+   {path: 'profile', component: ProfileComponent, canActivate: [AuthGuard]},
   {path: 'login', component: LoginComponent},
- // {path: 'profile', component: ProfileComponent, canActivate: [AuthGuard]},
   { path: 'welcome', component: WelcomeComponent},
-  { path: 'profile', component: ProfileComponent},
     { path: 'contact', component: ContactComponent},
     { path: 'sign-in', component: SignInComponent},
     { path: 'status', component: StatusComponent},

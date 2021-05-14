@@ -7,11 +7,10 @@ import { AuthGuard } from '@app/_helpers';
 
 @Component({ selector: 'app', templateUrl: 'app.component.html' ,styleUrls: ['./app.component.css'] })
 export class AppComponent {
-    isCollapsed = false;
-    currentUser: User;
+  isCollapsed = false;
+  currentUser: User;
 
-
-    constructor() {
+    constructor(public router: Router) {
     }
 
 }

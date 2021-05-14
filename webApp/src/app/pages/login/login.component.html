@@ -1,26 +1,28 @@
-<nz-header>
-    <h2> Sign in
-    </h2>
-  </nz-header>
+<div class="imgcontainer">
+  <img src="assets/images/user.png" alt="Avatar" class="avatar">
+</div>
   <div class="col-md-6 offset-md-3 mt-5">
       <div class="card">
           <div class="card-body">
-              <form nz-form [formGroup]="loginForm" (ngSubmit)="onSubmit()" >
-                  <div class="form-group">
-                      <input type="text" formControlName="username" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.username.errors }" placeholder="Username"/>
+              <form nz-form [formGroup]="loginForm"  class = "login-form" (ngSubmit)="onSubmit()">
+                  <div class="form-group" style="color:#000000;">
+                      <input type="text" formControlName="username" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.username.errors }" placeholder="Username" />
                       <div *ngIf="submitted && f.username.errors" class="invalid-feedback">
-                          <div *ngIf="f.username.errors.required">Username is required</div>
+                          <div style="color:#de1010;" *ngIf="f.username.errors.required">Username is required</div>
                       </div>
                   </div>
-                  <div class="form-group">
+                  <div class="form-group" style="color:#000000;">
                       <input type="password" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.password.errors }" placeholder="Password" />
                       <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
-                          <div *ngIf="f.password.errors.required">Password is required</div>
+                          <div style="color:#de1010;" *ngIf="f.password.errors.required">Password is required</div>
                       </div>
                   </div>
+                <label class="checkbox">
+                  <input type="checkbox" value="remember-me" id="rememberMe" name="rememberMe"> Remember me
+                </label>
                   <button [disabled]="loading" nz-button class="login-form-button login-form-margin" [nzType]="'primary'">
                       <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
-                      Login
+                      Log in
                   </button>
                 Or <a routerLink = "register"> register now! </a>
                 <div nz-col [nzSpan]="12">

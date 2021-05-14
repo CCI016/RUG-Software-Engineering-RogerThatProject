@@ -1,7 +1,6 @@
 ﻿<!-- main app container -->
-
-    <nz-layout class="app-layout">
-        <nz-sider class="menu-sidebar"
+    <nz-layout class="app-layout" >
+        <nz-sider class="menu-sidebar" *ngIf="!router.url.includes('login') && !router.url.includes('register') "
                   nzCollapsible
                   nzWidth="256px"
                   nzBreakpoint="md"
@@ -51,7 +50,7 @@
           </ul>
         </nz-sider>
         <nz-layout>
-          <nz-header>
+          <nz-header *ngIf="!router.url.includes('login') && !router.url.includes('register')">
             <div class="app-header">
               <span class="header-trigger" (click)="isCollapsed = !isCollapsed">
                   <i class="trigger"
@@ -68,5 +67,6 @@
           </nz-content>
         </nz-layout>
       </nz-layout>
+
 
 

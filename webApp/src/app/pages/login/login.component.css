@@ -1,4 +1,5 @@
-.card {
+
+.login-form {
   max-width: 300px;
 }
 
@@ -7,10 +8,53 @@
 }
 
 .login-form-forgot {
-  float: right;
+  text-align: center;
 }
 
 
+input[type=text], input[type=password] {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+button {
+  color: white;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  text-align: center;
+}
+
+.container {
+  padding: 16px;
+}
+
+.card{
+  margin: auto;
+  width: 60%;
+  padding: 10px;
+}
+.card-body{
+  margin: auto;
+  width: 60%;
+  padding: 10px;
+}
+
+.imgcontainer {
+  text-align: center;
+  margin: 14px 0 10px 0;
+}
+
+img.avatar {
+  width: 160px;
+  height: 160px;
+  border-radius: 20%;
+}
 
 
 
