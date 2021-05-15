@@ -69,7 +69,7 @@ public class AuthEndpoint {
         if(UserExists(email)) {
             return pass;
         } else {
-            // Return exception
+            // Return exception or an error
         }
     }
 
