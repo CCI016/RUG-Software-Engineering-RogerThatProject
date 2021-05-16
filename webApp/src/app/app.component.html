@@ -15,7 +15,7 @@
           <ul nz-menu nzTheme="dark" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
             <li nz-submenu nzOpen nzTitle="My Profile" nzIcon="user">
               <ul>
-                <li nz-menu-item nzMatchRouter>
+                <li nz-menu-item>
                   <i nz-icon nzType="idcard" nzTheme="outline"></i>
                   <a routerLink="/profile">My information</a>
                 </li>
@@ -23,28 +23,12 @@
                   <i nz-icon nzType="setting" nzTheme="outline"></i>
                   <a routerLink="/settings">Settings</a>
                 </li>
-                <li nz-menu-item>
-                  <i nz-icon nzType="import" nzTheme="outline"></i>
-                  <a>Log Out</a>
-                </li>
               </ul>
             </li>
             <li nz-menu-item>
               <a routerLink = "status">
                 <i nz-icon nzType="line-chart" nzTheme="outline"></i>
                 <span>Status</span>
-              </a>
-            </li>
-            <li nz-menu-item>
-              <a routerLink = "sign-in">
-                <i nz-icon nzType="line-chart" nzTheme="outline"></i>
-                <span>Sign in</span>
-              </a>
-            </li>
-            <li nz-menu-item>
-              <a routerLink = "register">
-                <i nz-icon nzType="line-chart" nzTheme="outline"></i>
-                <span>Register</span>
               </a>
             </li>
           </ul>
@@ -57,6 +41,7 @@
                      nz-icon
                      [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
                   ></i>
+                  <a routerLink="/profile" (click)="logout()" class="logout">Log Out</a>
               </span>
             </div>
           </nz-header>
