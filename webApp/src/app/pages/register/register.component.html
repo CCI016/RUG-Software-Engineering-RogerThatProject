@@ -2,27 +2,28 @@
   <h1> Register
   </h1>
 </nz-header>
-<form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+<div class="parent">   <div layout="row" layout-align="center center">
+<form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()" >
   <nz-form-item>
     <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="email">Username</nz-form-label>
-      <input nz-input formControlName="email" id="username" />
+      <input nz-input placeholder="Type here your username" style="color:#000000;" formControlName="email" id="username" />
   </nz-form-item>
   <nz-form-item>
     <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="email">E-mail</nz-form-label>
     <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="The input is not valid E-mail!">
-      <input nz-input formControlName="email" id="email" />
+      <input nz-input placeholder="Type here your email" formControlName="email" id="email" style="color:#000000;"/>
     </nz-form-control>
   </nz-form-item>
   <nz-form-item>
     <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="password" nzRequired>Password</nz-form-label>
     <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Please input your new password!">
-      <input nz-input type="password" id="password" formControlName="password" (ngModelChange)="updateConfirmValidator()" />
+      <input nz-input placeholder="Type here your password" type="password" id="password" formControlName="password" (ngModelChange)="updateConfirmValidator()" style="color:#000000;"/>
     </nz-form-control>
   </nz-form-item>
   <nz-form-item>
     <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="checkPassword" nzRequired>Confirm Password</nz-form-label>
     <nz-form-control [nzSm]="14" [nzXs]="24" [nzErrorTip]="errorTpl">
-      <input nz-input type="password" formControlName="checkPassword" id="checkPassword" />
+      <input nz-input placeholder="Type here your password" type="password" formControlName="checkPassword" id="checkPassword" style="color:#000000;"/>
       <ng-template #errorTpl let-control>
         <ng-container *ngIf="control.hasError('required')">
           Please confirm your password!
@@ -33,6 +34,7 @@
       </ng-template>
     </nz-form-control>
   </nz-form-item>
-  <button nz-button nzType="primary">Confirm</button>
+  <button nz-button nzType="primary" class="confirm">Confirm</button>
 </form>
+</div></div>
 
