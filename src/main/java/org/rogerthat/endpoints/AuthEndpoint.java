@@ -51,8 +51,8 @@ public class AuthEndpoint {
             return Response.status(401).build();
         } else {
             User user = new User();
-            user.email = email.toString();
-            user.password = pass.toString();
+            user.email = email;
+            user.password = pass;
             user.persist();
             return Response.status(200).build();
         }
