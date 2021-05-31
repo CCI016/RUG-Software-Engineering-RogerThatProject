@@ -5,11 +5,9 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.rogerthat.orm.Person;
-import org.rogerthat.orm.Transactions;
+import org.rogerthat.orm.*;
 
-import org.rogerthat.orm.User;
-
+import javax.transaction.Transaction;
 import javax.transaction.Transactional;
 
 public class CSVParser  {
@@ -95,6 +93,9 @@ public class CSVParser  {
      */
     @Transactional
     public void checkForDuplicates(List<Transactions> oldTransactions, List<Transactions> newTransactions, Person person) {
+        System.out.println(TransactionCategory.INCOME);
+        System.out.println(TransactionCategory.SPENDING);
+
         if (!oldTransactions.isEmpty()) { // if there are transactions we will check the duplicates by the time stamps.
             List<String> oldTimeStamps = new ArrayList<>();
 
@@ -104,16 +105,19 @@ public class CSVParser  {
 
             for (Transactions transaction : newTransactions) {
                 if (!oldTimeStamps.contains(transaction.dateTime)) {
-//                    transaction = clasifyTransaction(transaction);
-
+                    transaction = classifyTransaction(transaction);
                     person.transactions.add(transaction);
+
                     transaction.persist();
+                    System.out.println(transaction.transactionCategory);
+
                 }
             }
         } else {
             for (Transactions transaction : newTransactions) {
-//                transaction = clasifyTransaction(transaction);
+                transaction = classifyTransaction(transaction);
                 person.transactions.add(transaction);
+                System.out.println(transaction.transactionCategory);
                 transaction.persist();
             }
         }
@@ -123,9 +127,29 @@ public class CSVParser  {
 
     }
 
-//    private Transactions clasifyTransaction(Transactions transaction) {
-//        if (transaction.notes == "\"Betaalautomaat\"") {
-//            // here the transcation type will become spendings
-//        }
-//    }
+    private Transactions classifyTransaction(Transactions transaction) {
+        if (transaction.inOrOut.contains("\"Af\"")) {
+            transaction.transactionCategory = TransactionCategory.SPENDING;
+            categorizeTransactions(transaction);
+        } else {
+            transaction.transactionCategory = TransactionCategory.INCOME;
+        }
+
+        return transaction;
+    }
+
+    private Transactions categorizeTransactions(Transactions transaction) {
+        List<SpendingClassification> spendingClassifications = new ArrayList<>();
+
+        if (transaction.transactionCategory == TransactionCategory.SPENDING) {
+            spendingClassifications = SpendingClassification.listAll();
+
+            for (SpendingClassification spendingClassification : spendingClassifications) {
+                if (transaction.notes.toLowerCase().contains(spendingClassification.wordAssociated.toLowerCase())) {
+                    transaction.spendingCategory = spendingClassification.category;
+                }
+            }
+        }
+        return transaction;
+    }
 }

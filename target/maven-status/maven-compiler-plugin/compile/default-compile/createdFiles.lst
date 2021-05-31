@@ -2,6 +2,7 @@ org/rogerthat/orm/TransactionCategory.class
 org/rogerthat/orm/SpendingClassification.class
 org/rogerthat/orm/Person.class
 org/rogerthat/orm/Transactions.class
+org/rogerthat/orm/IntervalOverview.class
 org/rogerthat/orm/User.class
 org/rogerthat/endpoints/FileEndpoint.class
 org/rogerthat/orm/EntitySuperclassIdOnly.class
