@@ -1,16 +1,14 @@
 package org.rogerthat.endpoints;
 
 import org.eclipse.microprofile.config.inject.ConfigProperty;
-import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
+import org.rogerthat.orm.Person;
 import org.rogerthat.orm.User;
 
 import javax.transaction.Transactional;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.QueryParam;
+import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
-import java.io.IOException;
+
+import static io.quarkus.hibernate.orm.panache.PanacheEntityBase.*;
 
 @Path("/rest/file")
 public class AuthEndpoint {
@@ -34,8 +32,8 @@ public class AuthEndpoint {
     public Response Login(@QueryParam("email") String email,@QueryParam("password") String pass) {
         String usersPass = getPass(email);
 
-        // Check if the strings are matching
-        if(pass.equals(usersPass)) {
+        // Check if the strings are matching and user exists
+        if(pass.equals(usersPass) && UserExists(email)) {
             // Access the web page
             // 200 : OK successful response
             return Response.status(200).build();
@@ -46,42 +44,55 @@ public class AuthEndpoint {
         }
     }
 
-    public Response Register(String email, String pass) {
+    public Response Register(String email, String pass, String firstName, String lastName, int age) {
         if(UserExists(email)) {
             return Response.status(401).build();
         } else {
             User user = new User();
             user.email = email;
             user.password = pass;
+            user.person.firstName = firstName;
+            user.person.lastName = lastName;
+            user.person.age = age;
             user.persist();
             return Response.status(200).build();
         }
     }
 
     public Response ChangePass(@QueryParam("email") String email, @QueryParam("password") String oldPass, String newPass) {
-        if(oldPass.equals(getPass(email))) {
-            // TODO: Query to update the user's oldPass to newPass
-            // Or to delete existing user and register the user again
+        if(oldPass.equals(getPass(email)) && UserExists(email)) {
+            User user = findUserByEmail(email);
+            user.password = newPass;
+            user.persist();
             return Response.status(200).build();
         } else {
+            // Exception
             return Response.status(401).build();
         }
     }
 
     public String getPass(@QueryParam("email") String email) {
-        String pass;
-        // TODO: Query to pull the pass of the given email
-
         if(UserExists(email)) {
-            return pass;
+            User user = findUserByEmail(email);
+            return user.password;
         } else {
-            // Return exception or an error
+            // Exception
+            return "";
         }
     }
 
     public boolean UserExists(String email) {
-        // TODO: Query to check if the user exists with a password
-        // Return true if it does
-        // False if not
+        return true;
+    }
+
+    public User findUserByEmail(String email) {
+        if(UserExists(email)) {
+            // TODO: Query to get user by email
+        } else {
+            // Exception
+        }
+
+        // For now return is this so the method won't be problematic
+        return new User();
     }
 }
