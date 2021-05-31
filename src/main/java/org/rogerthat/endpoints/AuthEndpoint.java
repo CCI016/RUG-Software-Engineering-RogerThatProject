@@ -26,14 +26,13 @@ public class AuthEndpoint {
      * @return Response code.
      */
     @POST
-    @Path("/upload")
-    @Consumes("multipart/form-data")
+    @Path("/auth")
     @Transactional
-    public Response Login(@QueryParam("email") String email,@QueryParam("password") String pass) {
+    public Response login(@QueryParam("email") String email,@QueryParam("password") String pass) {
         String usersPass = getPass(email);
 
         // Check if the strings are matching and user exists
-        if(pass.equals(usersPass) && UserExists(email)) {
+        if(pass.equals(usersPass) && userExists(email)) {
             // Access the web page
             // 200 : OK successful response
             return Response.status(200).build();
@@ -44,8 +43,8 @@ public class AuthEndpoint {
         }
     }
 
-    public Response Register(String email, String pass, String firstName, String lastName, int age) {
-        if(UserExists(email)) {
+    public Response register(String email, String pass, String firstName, String lastName, int age) {
+        if(userExists(email)) {
             return Response.status(401).build();
         } else {
             User user = new User();
@@ -59,8 +58,8 @@ public class AuthEndpoint {
         }
     }
 
-    public Response ChangePass(@QueryParam("email") String email, @QueryParam("password") String oldPass, String newPass) {
-        if(oldPass.equals(getPass(email)) && UserExists(email)) {
+    public Response changePass(String email, String oldPass, String newPass) {
+        if(oldPass.equals(getPass(email)) && userExists(email)) {
             User user = findUserByEmail(email);
             user.password = newPass;
             user.persist();
@@ -72,7 +71,7 @@ public class AuthEndpoint {
     }
 
     public String getPass(@QueryParam("email") String email) {
-        if(UserExists(email)) {
+        if(userExists(email)) {
             User user = findUserByEmail(email);
             return user.password;
         } else {
@@ -81,18 +80,16 @@ public class AuthEndpoint {
         }
     }
 
-    public boolean UserExists(String email) {
-        return true;
+    public boolean userExists(String email) {
+        return User.find("email = ?1", email).firstResult() != null;
     }
 
     public User findUserByEmail(String email) {
-        if(UserExists(email)) {
-            // TODO: Query to get user by email
-        } else {
-            // Exception
+        User user = null;
+        if(userExists(email)) {
+            user = User.find("email = ?1", email).firstResult();
         }
 
-        // For now return is this so the method won't be problematic
-        return new User();
+        return user;
     }
 }
