@@ -8,6 +8,8 @@ import javax.transaction.Transactional;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
 
+import java.util.Base64;
+
 import static io.quarkus.hibernate.orm.panache.PanacheEntityBase.*;
 
 @Path("/rest/file")
@@ -29,7 +31,8 @@ public class AuthEndpoint {
     @Path("/auth")
     @Transactional
     public Response login(@QueryParam("email") String email,@QueryParam("password") String pass) {
-        String usersPass = getPass(email);
+        byte[] decodedPassBytes = Base64.getDecoder().decode(getPass(email));
+        String usersPass = new String(decodedPassBytes);
 
         // Check if the strings are matching and user exists
         if(pass.equals(usersPass) && userExists(email)) {
@@ -49,7 +52,10 @@ public class AuthEndpoint {
         } else {
             User user = new User();
             user.email = email;
-            user.password = pass;
+
+            String encodedPass = Base64.getEncoder().encodeToString(pass.getBytes());
+            user.password = encodedPass;
+
             user.person.firstName = firstName;
             user.person.lastName = lastName;
             user.person.age = age;
@@ -61,7 +67,8 @@ public class AuthEndpoint {
     public Response changePass(String email, String oldPass, String newPass) {
         if(oldPass.equals(getPass(email)) && userExists(email)) {
             User user = findUserByEmail(email);
-            user.password = newPass;
+            String encodedPass = Base64.getEncoder().encodeToString(newPass.getBytes());
+            user.password = encodedPass;
             user.persist();
             return Response.status(200).build();
         } else {
@@ -73,7 +80,9 @@ public class AuthEndpoint {
     public String getPass(@QueryParam("email") String email) {
         if(userExists(email)) {
             User user = findUserByEmail(email);
-            return user.password;
+            byte[] decodedPassBytes = Base64.getDecoder().decode(user.password);
+            String usersPass = new String(decodedPassBytes);
+            return usersPass;
         } else {
             // Exception
             return "";
