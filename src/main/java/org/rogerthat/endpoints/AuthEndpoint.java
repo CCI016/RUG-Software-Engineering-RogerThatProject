@@ -10,9 +10,7 @@ import javax.ws.rs.core.Response;
 
 import java.util.Base64;
 
-import static io.quarkus.hibernate.orm.panache.PanacheEntityBase.*;
-
-@Path("/rest/file")
+@Path("/rest/auth")
 public class AuthEndpoint {
 
     @ConfigProperty(name = "email")
@@ -72,7 +70,6 @@ public class AuthEndpoint {
             user.persist();
             return Response.status(200).build();
         } else {
-            // Exception
             return Response.status(401).build();
         }
     }
@@ -84,7 +81,6 @@ public class AuthEndpoint {
             String usersPass = new String(decodedPassBytes);
             return usersPass;
         } else {
-            // Exception
             return "";
         }
     }
@@ -94,11 +90,7 @@ public class AuthEndpoint {
     }
 
     public User findUserByEmail(String email) {
-        User user = null;
-        if(userExists(email)) {
-            user = User.find("email = ?1", email).firstResult();
-        }
-
+        User user = User.find("email = ?1", email).firstResult();
         return user;
     }
 }
