@@ -39,7 +39,7 @@ public class Analyzer {
 	@Transactional
 	public void transactionsFromSixMonths() {
 		List<Integer> monthsInterval = new ArrayList<>();
-		List<Integer> incomePerMonth = new ArrayList<>();
+		List<Double> incomePerMonth = new ArrayList<>();
 		int month = Integer.parseInt(LocalDate.now().format(DateTimeFormatter.ofPattern("MM")));
 		String year = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy"));
 		boolean isMixedYear = false;
@@ -51,14 +51,14 @@ public class Analyzer {
 			} else {
 				monthsInterval.add(month - i);
 			}
-			incomePerMonth.add(0);
+			incomePerMonth.add(0.00);
 		}
 
 		if (abs(monthsInterval.get(0) - monthsInterval.get(5)) > 5) {
 			isMixedYear = true;
 		}
-		
 
+		System.out.println(personTransactions.size());
 		for (Transactions transaction : personTransactions) {
 			String transactionYear = transaction.dateTime.substring(1, 5);
 			int transactionMonth = Integer.parseInt(transaction.dateTime.substring(5, 7));
@@ -66,26 +66,34 @@ public class Analyzer {
 			if (monthsInterval.contains(transactionMonth) && (transactionYear.equals(year)
 					|| (isMixedYear && (Integer.parseInt(transactionYear) == (Integer.parseInt(year) - 1))))) {
 				index = monthsInterval.indexOf(transactionMonth);
-
 				if (transaction.transactionCategory == TransactionCategory.INCOME) {
-					incomePerMonth.set(index, incomePerMonth.get(index) + Integer.parseInt(transaction.amount));
+					incomePerMonth.set(index, incomePerMonth.get(index) + Double.parseDouble(transaction.amount
+							.substring(1, transaction.amount.length() - 1).replace(",", ".")));
 				} else {
-					incomePerMonth.set(index, incomePerMonth.get(index) - Integer.parseInt(transaction.amount));
+					incomePerMonth.set(index, incomePerMonth.get(index) - Double.parseDouble(transaction.amount
+							.substring(1, transaction.amount.length() - 1).replace(",", ".")));
 				}
 
 			}
 
 		}
 
-		IntervalOverview intervalOverview = new IntervalOverview();
-		intervalOverview.person = Person.findById(this.personID);
+		List<IntervalOverview> intervalOverviews = IntervalOverview.listAll();
+
+		IntervalOverview intervalOverview = intervalOverviews.stream().filter(io -> io.person ==
+				Person.findById(this.personID)).findFirst().orElse(null);
+
+		if (intervalOverview == null) {
+			intervalOverview = new IntervalOverview();
+			intervalOverview.person = Person.findById(this.personID);
+		}
 
 		intervalOverview.month_0 = monthsInterval.get(0) + ":" + incomePerMonth.get(0);
-		intervalOverview.month_1 = monthsInterval.get(0) + ":" + incomePerMonth.get(0);
-		intervalOverview.month_2 = monthsInterval.get(0) + ":" + incomePerMonth.get(0);
-		intervalOverview.month_3 = monthsInterval.get(0) + ":" + incomePerMonth.get(0);
-		intervalOverview.month_4 = monthsInterval.get(0) + ":" + incomePerMonth.get(0);
-		intervalOverview.month_5 = monthsInterval.get(0) + ":" + incomePerMonth.get(0);
+		intervalOverview.month_1 = monthsInterval.get(1) + ":" + incomePerMonth.get(1);
+		intervalOverview.month_2 = monthsInterval.get(2) + ":" + incomePerMonth.get(2);
+		intervalOverview.month_3 = monthsInterval.get(3) + ":" + incomePerMonth.get(3);
+		intervalOverview.month_4 = monthsInterval.get(4) + ":" + incomePerMonth.get(4);
+		intervalOverview.month_5 = monthsInterval.get(5) + ":" + incomePerMonth.get(5);
 
 		intervalOverview.persist();
 	}

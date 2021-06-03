@@ -31,7 +31,7 @@ public class Transactions extends EntitySuperclassIdOnly{
 	@Column(name = "transaction_type")
 	public String transactionType;
 
-	@Column(name = "notes")
+	@Column(name = "notes", length = 200000)
 	public String notes;
 
 	@Column(name = "category")

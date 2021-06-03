@@ -46,10 +46,9 @@ public class CSVParser  {
             //Read the file line by line
             while ((line = fileReader.readLine()) != null) {
                 if (count != 0) {
-
+                    System.out.println(line);
                     //Get all tokens available in line
-                    String[] tokens = line.split(",");
-
+                    String[] tokens = line.split(";");
                     // Create an instance of a transaction
                     Transactions transaction = new Transactions();
 
@@ -62,7 +61,8 @@ public class CSVParser  {
                     transaction.accountTo = tokens[3];
                     transaction.code = tokens[4];
                     transaction.inOrOut = tokens[5];
-                    transaction.amount = tokens[6];
+                    transaction.amount = tokens[6].substring(1, tokens[6].length() -1);
+                    System.out.println(tokens[6].substring(1, tokens[6].length() -1));
                     transaction.transactionType = tokens[7];
                     transaction.notes = tokens[8];
 
@@ -144,6 +144,7 @@ public class CSVParser  {
         if (transaction.transactionCategory == TransactionCategory.SPENDING) {
             spendingClassifications = SpendingClassification.listAll();
 
+            transaction.spendingCategory = SpendingCategories.UNKNOWN;
             for (SpendingClassification spendingClassification : spendingClassifications) {
                 if (transaction.notes.toLowerCase().contains(spendingClassification.wordAssociated.toLowerCase())) {
                     transaction.spendingCategory = spendingClassification.category;
