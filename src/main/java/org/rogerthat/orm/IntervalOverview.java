@@ -30,4 +30,16 @@ public class IntervalOverview extends EntitySuperclassIdOnly {
 
 	@Column(name = "month_5")
 	public String month_5;
+
+	@Column(name = "withdrawals")
+	public int withdrawals;
+
+	@Column(name = "withdrawals_sum")
+	public String withdrawalsSum;
+
+	@Column(name = "incasso")
+	public int incasso;
+
+	@Column(name = "incasso_sum")
+	public String incassoSum;
 }
