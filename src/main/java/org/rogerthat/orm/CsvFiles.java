@@ -1,9 +1,9 @@
 package org.rogerthat.orm;
 
-import javax.persistence.Column;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 
+@Entity
+@Table(name = "csvfiles")
 public class CsvFiles extends EntitySuperclassIdOnly{
 
 	@Column(nullable =  false, name = "original_name")
@@ -12,9 +12,7 @@ public class CsvFiles extends EntitySuperclassIdOnly{
 	@Column(nullable = false, name = "changed_name")
 	public String changedName;
 
-	@OneToMany
-	@JoinColumn(nullable = false, name = "user")
+	@OneToOne
+	@JoinColumn(nullable = false, name = "user_id")
 	public User user;
-
-
 }

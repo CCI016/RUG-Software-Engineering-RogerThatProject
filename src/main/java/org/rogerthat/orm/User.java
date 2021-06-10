@@ -1,17 +1,21 @@
 package org.rogerthat.orm;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
+import javax.persistence.*;
 
 
+@Entity
+@Table(name = "users")
 public class User extends EntitySuperclassIdOnly {
 
-	@JoinColumn(nullable = false, name = "person")
+	@OneToOne
+	@JoinColumn(name = "person_id", nullable = false)
 	public Person person;
 
 	@Column(nullable = false, name = "email")
 	public String email;
+
+	@Column(nullable = false, name = "login")
+	public String login;
 
 	@Column(nullable = false, name = "password")
 	public String password; //Need to encrypt it at later stages, now we can work with exposed passwords.

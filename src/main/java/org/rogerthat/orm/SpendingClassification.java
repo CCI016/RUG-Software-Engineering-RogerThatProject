@@ -9,7 +9,7 @@ import javax.persistence.Table;
 public class SpendingClassification extends EntitySuperclassIdOnly {
 
 	@Column(name = "category")
-	public SpendingsCatogories category;
+	public SpendingCategories category;
 
 	@Column(name = "word_associated")
 	public String wordAssociated;

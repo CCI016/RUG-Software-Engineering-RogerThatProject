@@ -1,11 +1,7 @@
 package org.rogerthat.orm;
-
-import com.mysql.cj.x.protobuf.MysqlxDatatypes;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import java.sql.Date;
 
 @Entity
 @Table(name = "transactions")
@@ -35,14 +31,14 @@ public class Transactions extends EntitySuperclassIdOnly{
 	@Column(name = "transaction_type")
 	public String transactionType;
 
-	@Column(name = "notes")
+	@Column(name = "notes", length = 200000)
 	public String notes;
 
-//	@Column(name = "category")
-//	public TransactionCategory transactionCategory;
+	@Column(name = "category")
+	public TransactionCategory transactionCategory;
 
-//	@Column(name = "spending_classification")
-//	public SpendingClassification spendingClassification;
+	@Column(name = "spending_category")
+	public SpendingCategories spendingCategory;
 
 //	@Column(name = "income_classification")
 //	public IncomeClassification incomeClassification;
