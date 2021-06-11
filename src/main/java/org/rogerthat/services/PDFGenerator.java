@@ -2,6 +2,8 @@ package org.rogerthat.services;
 
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.*;
+import org.rogerthat.orm.IntervalOverview;
+import org.rogerthat.orm.Person;
 
 import javax.persistence.Table;
 import javax.swing.text.Document;
@@ -27,16 +29,35 @@ public class PDFGenerator {
         document.add(img);
 
         // Query for person from Analyzer
+        Person person = Person.findById(personID).stream().findFirst().orElse(null);
+        IntervalOverview interval = IntervalOverview.findById("person = 1?", person);
 
-
-        // Create a table for monthly overview and add it to the document
+        // Create a table for interval overview and add it to the document
 
         // Depending on the amount of columns and their widths initialise the values
-        //float columnWidth[] = {};
-        //Table table = new Table(columnWidth);
+        float columnWidth[] = {50f, 50f, 50f, 50f, 50f, 50f};
+        Table table = new Table(columnWidth);
 
         // Do the following columnWidth.length times
-        // table.addCell(new Cell().add("Name of the column n").setBackgroundColor(Color.GRAY));
+        table.addCell(new Cell().add("Month 1").setBackgroundColor(Color.GRAY));
+        table.addCell(new Cell().add("Month 2").setBackgroundColor(Color.GRAY));
+        table.addCell(new Cell().add("Month 3").setBackgroundColor(Color.GRAY));
+        table.addCell(new Cell().add("Month 4").setBackgroundColor(Color.GRAY));
+        table.addCell(new Cell().add("Month 5").setBackgroundColor(Color.GRAY));
+        table.addCell(new Cell().add("Month 6").setBackgroundColor(Color.GRAY));
+
+        // Add the values for each month
+        String months[] = {interval.month_0, interval.month_1, interval.month_2, interval.month_3, interval.month_4};
+
+        for (String month : months) {
+            if(Float.parseFloat(month) < 0) {
+                table.addCell(new Cell().add(month).setBackGroundColor(Color.RED));
+            } else {
+                table.addCell(new Cell().add(month).setBackGroundColor(Color.GREEN));
+            }
+        }
+        document.add(table);
+
 
         document.close();
         uploadPDF(document);
