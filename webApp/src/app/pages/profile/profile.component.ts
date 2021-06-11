@@ -1,7 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { AuthenticationService } from 'src/app/_services';
-import { User } from 'src/app/_models';
 
 @Component({
   selector: 'app-profile',
@@ -9,16 +6,19 @@ import { User } from 'src/app/_models';
   styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent implements OnInit {
-  currentUser: User;
-  userName = 'Andreyka Sorocovici';
-  email = 'andreyka.sorocovicika@gmail.com';
+  firstName = 'John';
+  lastName = 'Sorocovici';
+  userName = this.firstName + ' ' + this.lastName;
+  email = 'john.sorocovicika@gmail.com';
   phoneNr = '+31648679065';
-  employed = 'yes';
-  married = 'no';
+  employed = 'Yes';
+  married = 'No';
   children = '1';
+  genderMale = 'Male';
+  genderFemale = 'Female';
+  address = 'Oude Ebbigenstraat 10C';
 
-  constructor() {
-  }
+  constructor() { }
 
   ngOnInit(): void {
   }
