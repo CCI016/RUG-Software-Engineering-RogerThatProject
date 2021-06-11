@@ -2,10 +2,10 @@
   <img src="assets/images/user.png" alt="Avatar" class="avatar">
 </div>
   <div class="col-md-6 offset-md-3 mt-5">
-      <div class="card">
+      <div class="card" >
           <div class="card-body">
               <form nz-form [formGroup]="loginForm"  class = "login-form" (ngSubmit)="onSubmit()">
-                  <div class="form-group" style="color:#000000;">
+                  <div class="form-group" style="color:#000000;" >
                       <input type="text" formControlName="username" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.username.errors }" placeholder="Username" />
                       <div *ngIf="submitted && f.username.errors" class="invalid-feedback">
                           <div style="color:#de1010;" *ngIf="f.username.errors.required">Username is required</div>

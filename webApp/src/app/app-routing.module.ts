@@ -9,9 +9,9 @@ import { LoginComponent } from './pages/login';
 import { AuthGuard } from './_helpers';
 
 const routes: Routes = [
-   { path: '', redirectTo: '/login', pathMatch: 'full'},
-   {path: 'profile', component: ProfileComponent},
-  {path: 'login', component: LoginComponent, canActivate: [AuthGuard]},
+  { path: '', redirectTo: '/profile', pathMatch: 'full'},
+  {path: 'profile', component: ProfileComponent, canActivate: [AuthGuard]},
+  {path: 'login', component: LoginComponent},
     { path: 'contact', component: ContactComponent},
     { path: 'status', component: StatusComponent},
     { path: 'settings', component : SettingsComponent},
