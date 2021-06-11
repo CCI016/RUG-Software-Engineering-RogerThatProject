@@ -58,6 +58,15 @@ public class PDFGenerator {
         }
         document.add(table);
 
+        float columnWidth1[] = {50f, 50f};
+        Table table1 = new Table(columnWidth1);
+
+        table1.addCell(new Cell().add("Withdrawals").setBackgroundColor(Color.GRAY));
+        table1.addCell(new Cell().add("Incasso").setBackgroundColor(Color.GRAY));
+        table1.addCell(new Cell().add(interval.withdrawalsSum));
+        table1.addCell(new Cell().add(interval.incassoSum));
+
+        document.add(table1);
 
         document.close();
         uploadPDF(document);
