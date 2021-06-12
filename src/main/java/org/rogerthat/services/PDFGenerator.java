@@ -30,7 +30,7 @@ public class PDFGenerator {
 
         // Query for person from Analyzer
         Person person = Person.findById(personID).stream().findFirst().orElse(null);
-        IntervalOverview interval = IntervalOverview.findById("person = 1?", person);
+        IntervalOverview interval = IntervalOverview.findById("person = 1?", person).findFirst();
 
         // Create a table for interval overview and add it to the document
 
