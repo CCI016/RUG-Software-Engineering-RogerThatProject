@@ -34,7 +34,8 @@ public class Analyzer {
 	/**
 	 * This function will take the user's transaction from the previous six months
 	 * It will look at the user's income and the user's spendings and see if they declined or
-	 * stayed the same or increased.
+	 * stayed the same or increased. Also it will look for how many withdrawals were made for the last 6 months,
+	 * how many incasso transactions were made. All this gathered data will be used for our report
 	 */
 	@Transactional
 	public void transactionsFromSixMonths() {
