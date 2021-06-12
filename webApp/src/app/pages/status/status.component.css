@@ -7,3 +7,18 @@
   float: right;
   margin: 5%;
 }
+.width40 {
+  float: center;
+
+  margin-right: 5%;
+}
+
+.width20 {
+  float: center;
+
+  margin-left:10%
+}
+
+.black {
+  background-color: black;
+}

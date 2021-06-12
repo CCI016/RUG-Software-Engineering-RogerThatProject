@@ -1,3 +1,4 @@
+org/rogerthat/endpoints/TranscationsEndpoint.class
 org/rogerthat/orm/TransactionCategory.class
 org/rogerthat/orm/SpendingClassification.class
 org/rogerthat/orm/Person.class
