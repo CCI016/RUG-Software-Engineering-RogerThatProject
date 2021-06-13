@@ -44,9 +44,9 @@ public class Analyzer {
 		int month = Integer.parseInt(LocalDate.now().format(DateTimeFormatter.ofPattern("MM")));
 		String year = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy"));
 		boolean isMixedYear = false;
-		int withdrawals = 0, incasso = 0;
-		double withdrawalsSum = 0.0, incassoSum = 0.0;
-		int index = 0;
+		int withdrawals = 0, incasso = 0, index = 0;
+		double withdrawalsSum = 0.0, incassoSum = 0.0, spending = 0.0, income = 0.0;
+
 
 		for (int i = 0; i < 6; i++) {
 			if ((month - i) < 1) {
@@ -82,15 +82,22 @@ public class Analyzer {
 							.substring(0, transaction.amount.length() - 1).replace(",", "."));
 				}
 				if (transaction.transactionCategory == TransactionCategory.INCOME) {
-					incomePerMonth.set(index, incomePerMonth.get(index) + Double.parseDouble(transaction.amount.replace(",", ".")));
+					incomePerMonth.set(index, incomePerMonth.get(index) + Double.parseDouble(transaction.amount
+							.replace(",", ".")));
+					income += Double.parseDouble(transaction.amount
+							.replace(",", "."));
+
 				} else {
 					incomePerMonth.set(index, incomePerMonth.get(index) - Double.parseDouble(transaction.amount
 							.replace(",", ".")));
+					spending += Double.parseDouble(transaction.amount
+							.replace(",", "."));
 				}
 
 			}
 
 		}
+		
 
 		List<IntervalOverview> intervalOverviews = IntervalOverview.listAll();
 
@@ -112,6 +119,9 @@ public class Analyzer {
 		intervalOverview.withdrawalsSum = String.valueOf(withdrawalsSum);
 		intervalOverview.incasso = incasso;
 		intervalOverview.incassoSum = String.valueOf(incassoSum);
+		intervalOverview.income = String.valueOf(income);
+		intervalOverview.spending = String.valueOf(spending);
+
 		intervalOverview.persist();
 	}
 }
