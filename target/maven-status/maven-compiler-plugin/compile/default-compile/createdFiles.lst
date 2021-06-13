@@ -1,4 +1,3 @@
-org/rogerthat/endpoints/TranscationsEndpoint.class
 org/rogerthat/orm/TransactionCategory.class
 org/rogerthat/orm/SpendingClassification.class
 org/rogerthat/orm/Person.class
@@ -7,6 +6,7 @@ org/rogerthat/orm/IntervalOverview.class
 org/rogerthat/orm/User.class
 org/rogerthat/endpoints/FileEndpoint.class
 org/rogerthat/orm/EntitySuperclassIdOnly.class
+org/rogerthat/endpoints/TransactionsEndpoint.class
 org/rogerthat/orm/SpendingCategories.class
 META-INF/panache-archive.marker
 org/rogerthat/services/CSVParser.class

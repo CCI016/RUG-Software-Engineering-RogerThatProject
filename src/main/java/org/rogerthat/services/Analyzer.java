@@ -70,23 +70,22 @@ public class Analyzer {
 			if (monthsInterval.contains(transactionMonth) && (transactionYear.equals(year)
 					|| (isMixedYear && (Integer.parseInt(transactionYear) == (Integer.parseInt(year) - 1))))) {
 				index = monthsInterval.indexOf(transactionMonth);
-				if (transaction.transactionType == "\"Geldautomaat\"" && transaction.transactionCategory
+				if (transaction.transactionType.equals("\"Geldautomaat\"") && transaction.transactionCategory
 						== TransactionCategory.SPENDING) {
 					withdrawals++;
 					withdrawalsSum += Double.parseDouble(transaction.amount
-							.substring(1, transaction.amount.length() - 1).replace(",", "."));
+							.substring(0, transaction.amount.length() - 1).replace(",", "."));
 				}
-				if (transaction.transactionType == "\"Incasso\"") {
+				if (transaction.transactionType.equals("\"Incasso\"")) {
 					incasso++;
 					incassoSum += Double.parseDouble(transaction.amount
-							.substring(1, transaction.amount.length() - 1).replace(",", "."));
+							.substring(0, transaction.amount.length() - 1).replace(",", "."));
 				}
 				if (transaction.transactionCategory == TransactionCategory.INCOME) {
-					incomePerMonth.set(index, incomePerMonth.get(index) + Double.parseDouble(transaction.amount
-							.substring(1, transaction.amount.length() - 1).replace(",", ".")));
+					incomePerMonth.set(index, incomePerMonth.get(index) + Double.parseDouble(transaction.amount.replace(",", ".")));
 				} else {
 					incomePerMonth.set(index, incomePerMonth.get(index) - Double.parseDouble(transaction.amount
-							.substring(1, transaction.amount.length() - 1).replace(",", ".")));
+							.replace(",", ".")));
 				}
 
 			}
