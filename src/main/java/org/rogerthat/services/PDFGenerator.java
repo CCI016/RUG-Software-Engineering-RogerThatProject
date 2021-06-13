@@ -1,75 +1,237 @@
 package org.rogerthat.services;
 
 import com.itextpdf.text.*;
+import com.itextpdf.text.Image;
 import com.itextpdf.text.pdf.*;
 import org.rogerthat.orm.IntervalOverview;
 import org.rogerthat.orm.Person;
+import org.rogerthat.orm.TransactionCategory;
+import org.rogerthat.orm.Transactions;
 
-import javax.persistence.Table;
-import javax.swing.text.Document;
-import java.awt.*;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.*;
+import java.util.List;
+import java.util.stream.Stream;
 
 public class PDFGenerator {
 
-    private void uploadPDF(Document document) {
-        // POST the generated document
+    private Document getPDF(Document document) {
+        return document;
     }
 
     public void generatePDF(Long personID) {
         // Adding RogerThat logo to the document
-        Path path = Paths.get(ClassLoader.getSystemResource("roger_that_logo.png").toURI());
+        Path path = null;
+        try {
+            path = Paths.get(ClassLoader.getSystemResource("roger_that_logo.png").toURI());
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
 
         Document document = new Document();
-        PdfWriter.getInstance(document, new FileOutputStream("overview.pdf"));
+        try {
+            PdfWriter.getInstance(document, new FileOutputStream("overview.pdf"));
+        } catch (DocumentException e) {
+            e.printStackTrace();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
         document.open();
-        Image img = Image.getInstance(path.toAbsolutePath().toString());
-        document.add(img);
+        Image img = null;
+
+        try {
+            img = Image.getInstance(path.toAbsolutePath().toString());
+        } catch (BadElementException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            document.add(img);
+        } catch (DocumentException e) {
+            e.printStackTrace();
+        }
 
         // Query for person from Analyzer
-        Person person = Person.findById(personID).stream().findFirst().orElse(null);
-        IntervalOverview interval = IntervalOverview.findById("person = 1?", person).findFirst();
+        Person person = Person.findById(personID);
+        List<IntervalOverview> intervalOverviews = IntervalOverview.listAll();
+        IntervalOverview interval = intervalOverviews.stream().filter(io -> io.person ==
+                person).findFirst().orElse(null);
 
         // Create a table for interval overview and add it to the document
 
-        // Depending on the amount of columns and their widths initialise the values
-        float columnWidth[] = {50f, 50f, 50f, 50f, 50f, 50f};
-        Table table = new Table(columnWidth);
-
-        // Do the following columnWidth.length times
-        table.addCell(new Cell().add("Month 1").setBackgroundColor(Color.GRAY));
-        table.addCell(new Cell().add("Month 2").setBackgroundColor(Color.GRAY));
-        table.addCell(new Cell().add("Month 3").setBackgroundColor(Color.GRAY));
-        table.addCell(new Cell().add("Month 4").setBackgroundColor(Color.GRAY));
-        table.addCell(new Cell().add("Month 5").setBackgroundColor(Color.GRAY));
-        table.addCell(new Cell().add("Month 6").setBackgroundColor(Color.GRAY));
+        PdfPTable table = new PdfPTable(6);
+        addTableHeader(table);
 
         // Add the values for each month
         String months[] = {interval.month_0, interval.month_1, interval.month_2, interval.month_3, interval.month_4};
-
+        PdfPCell cell = new PdfPCell();
         for (String month : months) {
+            cell = new PdfPCell(new Phrase(month));
             if(Float.parseFloat(month) < 0) {
-                table.addCell(new Cell().add(month).setBackGroundColor(Color.RED));
+                cell.setBackgroundColor(BaseColor.RED);
             } else {
-                table.addCell(new Cell().add(month).setBackGroundColor(Color.GREEN));
+                cell.setBackgroundColor(BaseColor.GREEN);
+            }
+            table.addCell(cell);
+        }
+
+        // Add first table
+        try {
+            document.add(new Paragraph(" "));
+            document.add(table);
+        } catch (DocumentException e) {
+            e.printStackTrace();
+        }
+
+        // Withdarals and incasso sum table
+        PdfPTable table1 = new PdfPTable(2);
+        addTable1Header(table1);
+
+
+        cell = new PdfPCell(new Phrase(interval.withdrawalsSum));
+        table1.addCell(cell);
+        cell = new PdfPCell(new Phrase(interval.incassoSum));
+        table1.addCell(cell);
+
+        // Add second table
+        try {
+            document.add(new Paragraph(" "));
+            document.add(table1);
+        } catch (DocumentException e) {
+            e.printStackTrace();
+        }
+
+        // Spending Category - Percentage table
+        PdfPTable table2 = new PdfPTable(2);
+        addTable2Header(table2);
+
+        // List of all transactions of the person
+        List<Transactions> transactions = person.transactions;
+
+        List<Transactions> spendingTransactions = new ArrayList<>();
+        for (Transactions transaction : transactions) {
+            if(transaction.transactionCategory == TransactionCategory.SPENDING) {
+                spendingTransactions.add(transaction);
             }
         }
-        document.add(table);
 
-        float columnWidth1[] = {50f, 50f};
-        Table table1 = new Table(columnWidth1);
 
-        table1.addCell(new Cell().add("Withdrawals").setBackgroundColor(Color.GRAY));
-        table1.addCell(new Cell().add("Incasso").setBackgroundColor(Color.GRAY));
-        table1.addCell(new Cell().add(interval.withdrawalsSum));
-        table1.addCell(new Cell().add(interval.incassoSum));
+        int totalNumOfTransactions = spendingTransactions.size();
+        double entertainmentTransactions = 0.0, housingTransactions = 0.0, groceriesTransactions = 0.0,
+                eatingOutTransactions = 0.0, clothesTransactions = 0.0, unknownTransactions = 0.0, totalSpendings = 0.0;
 
-        document.add(table1);
+        for (Transactions transaction : spendingTransactions) {
+            switch (transaction.spendingCategory) {
+                case CLOTHES:
+                    clothesTransactions = clothesTransactions + Double.parseDouble(transaction.amount);
+                case HOUSING:
+                    housingTransactions = housingTransactions + Double.parseDouble(transaction.amount);
+                case GROCERIES:
+                    groceriesTransactions = groceriesTransactions + Double.parseDouble(transaction.amount);
+                case EATING_OUT:
+                    eatingOutTransactions = eatingOutTransactions + Double.parseDouble(transaction.amount);
+                case ENTERTAINMENT:
+                    entertainmentTransactions = entertainmentTransactions + Double.parseDouble(transaction.amount);
+                default:
+                    if(!(transaction.transactionType.equals("\"Betaalautomaat\"") && transaction.accountTo.equals("\"\""))){
+                        unknownTransactions = unknownTransactions + Double.parseDouble(transaction.amount);
+                    }
+            }
+        }
+        // Calculate total spendings
+        totalSpendings = clothesTransactions + housingTransactions + groceriesTransactions + eatingOutTransactions +
+                entertainmentTransactions + unknownTransactions;
+
+        // Populate the table with spending categories and their percentages
+        cell = new PdfPCell(new Phrase("Clothes"));
+        table2.addCell(cell);
+
+        double clothesPercentage = (clothesTransactions / totalSpendings) * 100;
+        cell = new PdfPCell(new Phrase(String.valueOf(clothesPercentage) + "%"));
+        table2.addCell(cell);
+
+        cell = new PdfPCell(new Phrase("Housing"));
+        table2.addCell(cell);
+
+        double housingPercentage = (housingTransactions / totalSpendings) * 100;
+        cell = new PdfPCell(new Phrase(String.valueOf(housingPercentage) + "%"));
+        table2.addCell(cell);
+
+        cell = new PdfPCell(new Phrase("Groceries"));
+        table2.addCell(cell);
+
+        double groceriesPercentage = (groceriesTransactions / totalSpendings) * 100;
+        cell = new PdfPCell(new Phrase(String.valueOf(groceriesPercentage) + "%"));
+        table2.addCell(cell);
+
+        cell = new PdfPCell(new Phrase("Eating out"));
+        table2.addCell(cell);
+
+        double eatingOutPercentage = (eatingOutTransactions / totalSpendings) * 100;
+        cell = new PdfPCell(new Phrase(String.valueOf(eatingOutPercentage) + "%"));
+        table2.addCell(cell);
+
+        cell = new PdfPCell(new Phrase("Entertainment"));
+        table2.addCell(cell);
+
+        double entertainmentPercentage = (entertainmentTransactions / totalSpendings) * 100;
+        cell = new PdfPCell(new Phrase(String.valueOf(entertainmentPercentage) + "%"));
+        table2.addCell(cell);
+
+        cell = new PdfPCell(new Phrase("Unknown"));
+        table2.addCell(cell);
+
+        double unknownPercentage = (unknownTransactions / totalSpendings) * 100;
+        cell = new PdfPCell(new Phrase(String.valueOf(unknownPercentage) + "%"));
+        table2.addCell(cell);
+
+        // Add third table
+        try {
+            document.add(new Paragraph(" "));
+            document.add(table2);
+        } catch (DocumentException e) {
+            e.printStackTrace();
+        }
 
         document.close();
-        uploadPDF(document);
     }
 
+    private void addTableHeader(PdfPTable table) {
+        Stream.of("Month 1", "Month 2", "Month 3", "Month 4", "Month 4", "Month 5", "Month 6")
+                .forEach(columnTitle -> {
+                    PdfPCell header = new PdfPCell();
+                    header.setBackgroundColor(BaseColor.LIGHT_GRAY);
+                    header.setBorderWidth(2);
+                    header.setPhrase(new Phrase(columnTitle));
+                    table.addCell(header);
+                });
+    }
+
+    private void addTable1Header(PdfPTable table) {
+        Stream.of("Withdrawals", "Incasso")
+                .forEach(columnTitle -> {
+                    PdfPCell header = new PdfPCell();
+                    header.setBackgroundColor(BaseColor.LIGHT_GRAY);
+                    header.setBorderWidth(2);
+                    header.setPhrase(new Phrase(columnTitle));
+                    table.addCell(header);
+                });
+    }
+
+    private void addTable2Header(PdfPTable table) {
+        Stream.of("Category", "Percentage")
+                .forEach(columnTitle -> {
+                    PdfPCell header = new PdfPCell();
+                    header.setBackgroundColor(BaseColor.LIGHT_GRAY);
+                    header.setBorderWidth(2);
+                    header.setPhrase(new Phrase(columnTitle));
+                    table.addCell(header);
+                });
+    }
 }
