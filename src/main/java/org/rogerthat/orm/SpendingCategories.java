@@ -1,10 +1,11 @@
 package org.rogerthat.orm;
 
-public enum SpendingsCatogories {
+public enum SpendingCategories {
 	ENTERTAINMENT,
 	HOUSING,
 	GROCERIES,
 	EATING_OUT,
 	CLOTHES,
-
+	OTHER,
+	UNKNOWN
 }

@@ -21,10 +21,12 @@ import { RegisterComponent } from './pages/register/register.component';
 import {NzFormModule} from 'ng-zorro-antd/form';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { NzSelectModule } from 'ng-zorro-antd/select';
 // used to create fake backend
 import {AuthGuard, fakeBackendProvider} from './_helpers';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
+import { NzModalModule } from 'ng-zorro-antd/modal';
 
 import { JwtInterceptor, ErrorInterceptor } from './_helpers';
 import { HomeComponent } from './pages/home';
