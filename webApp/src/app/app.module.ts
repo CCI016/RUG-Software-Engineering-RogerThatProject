@@ -33,7 +33,6 @@ import { HomeComponent } from './pages/home';
 import { LoginComponent } from './pages/login';
 import { IconsProviderModule } from 'src/icons-provider.module';
 import {RouterModule} from '@angular/router';
-import { NzSelectModule } from 'ng-zorro-antd/select';
 
 @NgModule({
     imports: [
@@ -53,6 +52,8 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
         BrowserModule,
         IconsProviderModule,
         BrowserAnimationsModule,
+        NzModalModule,
+        NzSelectModule
     ],
     declarations: [
         AppComponent,
