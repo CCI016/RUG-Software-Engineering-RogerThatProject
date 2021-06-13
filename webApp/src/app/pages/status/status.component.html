@@ -1,5 +1,5 @@
   <div nz-row >
-    <div nz-col nzSpan="10">
+    <div nz-col nzSpan="8">
       <div class="top-area-left">
         <span> Upload your Transactions: </span> 
         <nz-upload
@@ -12,7 +12,15 @@
         </nz-upload>
       </div>
     </div>
-    <div nz-col nzSpan="10">
+
+    <div nz-col nzSpan = "8">
+      <div class="top-area-right">
+        <span> Categorize Transactions: </span> 
+        <button nz-button nzType="primary" (click)="categorizeTransactions()" >Click to Categorize</button>
+      </div>
+    </div>
+
+    <div nz-col nzSpan="8">
       <div class="top-area-right">
         <span>Download detailed overview: </span>
         <button nz-button nzType="primary" ><i nz-icon nzType="download" (click)="downloadOverview()" ></i>Download</button>
@@ -20,3 +28,29 @@
     </div>
   </div>
 
+  <div class="try">
+  <nz-modal nzWidth="70%" [(nzVisible)]="isVisible" nzTitle="Help us improve tranzaction categorization! " (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
+    <ng-container *nzModalContent>
+      <nz-table #basicTable [nzData]="transactions">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Notes</th>
+            <th>Category</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of transactions; let i = index">
+            <td>{{ data.name }}</td>
+            <td >{{ data.notes }}</td>
+            <td >
+              <select class = black (change) = "log($event, i)">
+                <option *ngFor="let option of optionList" [value]="option.value" >{{option.label}}</option>
+              </select>
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+    </ng-container>
+  </nz-modal>
+</div>

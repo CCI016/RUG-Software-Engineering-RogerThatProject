@@ -21,15 +21,18 @@ import { RegisterComponent } from './pages/register/register.component';
 import {NzFormModule} from 'ng-zorro-antd/form';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { NzSelectModule } from 'ng-zorro-antd/select';
 // used to create fake backend
-import { fakeBackendProvider } from './_helpers';
+import {AuthGuard, fakeBackendProvider} from './_helpers';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
+import { NzModalModule } from 'ng-zorro-antd/modal';
 
 import { JwtInterceptor, ErrorInterceptor } from './_helpers';
 import { HomeComponent } from './pages/home';
 import { LoginComponent } from './pages/login';
 import { IconsProviderModule } from 'src/icons-provider.module';
+import {RouterModule} from '@angular/router';
 
 @NgModule({
     imports: [
@@ -44,10 +47,13 @@ import { IconsProviderModule } from 'src/icons-provider.module';
         NzIconModule,
         NzUploadModule,
         NzFormModule,
+        NzSelectModule,
         CommonModule,
         BrowserModule,
         IconsProviderModule,
-        BrowserAnimationsModule
+        BrowserAnimationsModule,
+        NzModalModule,
+        NzSelectModule
     ],
     declarations: [
         AppComponent,
@@ -66,8 +72,9 @@ import { IconsProviderModule } from 'src/icons-provider.module';
         { provide: NZ_I18N, useValue: en_US },
 
         // provider used to create fake backend
-        fakeBackendProvider
+        fakeBackendProvider,
     ],
     bootstrap: [AppComponent]
 })
+
 export class AppModule { }

@@ -46,7 +46,6 @@ public class CSVParser  {
             //Read the file line by line
             while ((line = fileReader.readLine()) != null) {
                 if (count != 0) {
-                    System.out.println(line);
                     //Get all tokens available in line
                     String[] tokens = line.split(";");
                     // Create an instance of a transaction
@@ -62,7 +61,6 @@ public class CSVParser  {
                     transaction.code = tokens[4];
                     transaction.inOrOut = tokens[5];
                     transaction.amount = tokens[6].substring(1, tokens[6].length() -1);
-                    System.out.println(tokens[6].substring(1, tokens[6].length() -1));
                     transaction.transactionType = tokens[7];
                     transaction.notes = tokens[8];
 
@@ -78,7 +76,6 @@ public class CSVParser  {
             fileReader.close();
 
             checkForDuplicates(this.transactions, newTransactions, person);
-            // TODO: Check if the file exists already in the database, by means of timestamps and userId
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -87,14 +84,12 @@ public class CSVParser  {
 
 
     /**
-     *
+     * This function will make sure that a single transaction is not pushed 2 times in our DB
      * @param oldTransactions The list of previous transactions of this user
      * @param newTransactions The list of incoming transactions for this user
      */
     @Transactional
     public void checkForDuplicates(List<Transactions> oldTransactions, List<Transactions> newTransactions, Person person) {
-        System.out.println(TransactionCategory.INCOME);
-        System.out.println(TransactionCategory.SPENDING);
 
         if (!oldTransactions.isEmpty()) { // if there are transactions we will check the duplicates by the time stamps.
             List<String> oldTimeStamps = new ArrayList<>();
@@ -109,7 +104,6 @@ public class CSVParser  {
                     person.transactions.add(transaction);
 
                     transaction.persist();
-                    System.out.println(transaction.transactionCategory);
 
                 }
             }
@@ -117,7 +111,6 @@ public class CSVParser  {
             for (Transactions transaction : newTransactions) {
                 transaction = classifyTransaction(transaction);
                 person.transactions.add(transaction);
-                System.out.println(transaction.transactionCategory);
                 transaction.persist();
             }
         }
@@ -127,6 +120,11 @@ public class CSVParser  {
 
     }
 
+    /**
+     * Checks if the transaction is income or spending
+     * @param transaction
+     * @return
+     */
     private Transactions classifyTransaction(Transactions transaction) {
         if (transaction.inOrOut.contains("\"Af\"")) {
             transaction.transactionCategory = TransactionCategory.SPENDING;
@@ -138,6 +136,11 @@ public class CSVParser  {
         return transaction;
     }
 
+    /**
+     * Categorizes transaction
+     * @param transaction
+     * @return
+     */
     private Transactions categorizeTransactions(Transactions transaction) {
         List<SpendingClassification> spendingClassifications = new ArrayList<>();
 
@@ -146,11 +149,20 @@ public class CSVParser  {
 
             transaction.spendingCategory = SpendingCategories.UNKNOWN;
             for (SpendingClassification spendingClassification : spendingClassifications) {
-                if (transaction.notes.toLowerCase().contains(spendingClassification.wordAssociated.toLowerCase())) {
+                if (transaction.notes.toLowerCase().contains(spendingClassification.wordAssociated.toLowerCase()) ||
+                        (transaction.name.toLowerCase().contains(spendingClassification.wordAssociated.toLowerCase()))) {
                     transaction.spendingCategory = spendingClassification.category;
                 }
             }
         }
         return transaction;
+    }
+
+    @Transactional
+    public void recategorizeTransactions() {
+        List<Transactions> transactions = Transactions.listAll();
+        for(Transactions transaction : transactions) {
+            categorizeTransactions(transaction);
+        }
     }
 }

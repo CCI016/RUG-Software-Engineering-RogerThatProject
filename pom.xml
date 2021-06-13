@@ -64,6 +64,10 @@
       <artifactId>rest-assured</artifactId>
       <scope>test</scope>
     </dependency>
+     <dependency>
+         <groupId>org.glassfish</groupId>
+         <artifactId>jakarta.json</artifactId>
+     </dependency>
     <dependency>
       <groupId>com.itextpdf</groupId>
       <artifactId>itextpdf</artifactId>

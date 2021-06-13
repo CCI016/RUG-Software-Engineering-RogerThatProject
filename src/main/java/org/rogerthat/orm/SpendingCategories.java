@@ -6,5 +6,6 @@ public enum SpendingCategories {
 	GROCERIES,
 	EATING_OUT,
 	CLOTHES,
+	OTHER,
 	UNKNOWN
 }
