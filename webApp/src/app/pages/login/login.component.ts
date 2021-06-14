@@ -56,6 +56,5 @@ export class LoginComponent implements OnInit {
                     this.loading = false;
                 }
             });
-            console.log(this.f.username.value);
     }
 }
