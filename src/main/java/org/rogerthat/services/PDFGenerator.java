@@ -18,11 +18,7 @@ import java.util.*;
 import java.util.List;
 import java.util.stream.Stream;
 
-public class PDFGenerator {
-
-    private Document getPDF(Document document) {
-        return document;
-    }
+public class PDFGenerator { 
 
     public void generatePDF(Long personID) {
         // Adding RogerThat logo to the document
