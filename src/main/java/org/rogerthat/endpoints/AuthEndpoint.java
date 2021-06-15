@@ -19,24 +19,31 @@ public class AuthEndpoint {
     @ConfigProperty(name = "password")
     String pass;
 
+    private final ObjectMapper mapper;
+
+    public AuthEndpoint() {
+		this.mapper = new ObjectMapper();
+	}
+
     /**
      * Endpoint for uploading user authorisation information.
      * @param email User's email for sign-up or sign-in functions
      * @param pass User's password for sign-up or sign-in functions
      * @return Response code.
      */
-    @POST
-    @Path("/auth")
+    @GET
+    @Path("auth")
     @Transactional
     public Response login(@QueryParam("email") String email,@QueryParam("password") String pass) {
         byte[] decodedPassBytes = Base64.getDecoder().decode(getPass(email));
         String usersPass = new String(decodedPassBytes);
 
         // Check if the strings are matching and user exists
-        if(pass.equals(usersPass) && userExists(email)) {
+        if(userExists(email) && pass.equals(getPass(email))) {
             // Access the web page
+            User user = User.find("email = ?1", email);
             // 200 : OK successful response
-            return Response.status(200).build();
+            return Response.ok(mapper.writeValueAsString(user.id)).build();
         } else {
             // Deny access and let them try again
             // 401 : Unauthorized client error response
@@ -44,6 +51,9 @@ public class AuthEndpoint {
         }
     }
 
+    @POST
+    @Path("register")
+    @Transactional
     public Response register(String email, String pass, String firstName, String lastName, int age) {
         if(userExists(email)) {
             return Response.status(401).build();
@@ -62,6 +72,8 @@ public class AuthEndpoint {
         }
     }
 
+    @POST
+    @Path("changePass")
     public Response changePass(String email, String oldPass, String newPass) {
         if(oldPass.equals(getPass(email)) && userExists(email)) {
             User user = findUserByEmail(email);
@@ -74,7 +86,7 @@ public class AuthEndpoint {
         }
     }
 
-    public String getPass(@QueryParam("email") String email) {
+    public String getPass(String email) {
         if(userExists(email)) {
             User user = findUserByEmail(email);
             byte[] decodedPassBytes = Base64.getDecoder().decode(user.password);

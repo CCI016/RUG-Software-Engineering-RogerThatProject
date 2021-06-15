@@ -62,7 +62,6 @@ export class StatusComponent implements OnInit {
   }
 
   handleOk() {
-    console.log("Intra");
     this.webService.postData("/rest/transaction/updateCategorization?", this.transactions).subscribe();
     this.isVisible = false;
   }
