@@ -4,9 +4,11 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 
 import { AuthenticationService } from '@app/_services';
+import { WebRequestService } from '@app/services/web.service';
 
 @Component({ templateUrl: 'login.component.html', styleUrls: ['./login.component.css'] })
 export class LoginComponent implements OnInit {
+    userId = 1;
     loginForm: FormGroup;
     loading = false;
     submitted = false;
@@ -16,7 +18,8 @@ export class LoginComponent implements OnInit {
         private formBuilder: FormBuilder,
         private route: ActivatedRoute,
         private router: Router,
-        private authenticationService: AuthenticationService
+        private authenticationService: AuthenticationService,
+        private webService: WebRequestService,
     ) {
         // redirect to home if already logged in
         if (this.authenticationService.currentUserValue) {
@@ -42,6 +45,12 @@ export class LoginComponent implements OnInit {
             return;
         }
 
+        this.webService.getData("/rest/auth/login?email=" + this.f.username.value + "&password=" + this.f.password.value).subscribe(
+             data => {
+                    this.userId = data as number;
+             }
+        )
+        
         this.loading = true;
         this.authenticationService.login(this.f.username.value, this.f.password.value)
             .pipe(first())
