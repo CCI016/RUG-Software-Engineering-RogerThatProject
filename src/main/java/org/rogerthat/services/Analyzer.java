@@ -44,9 +44,9 @@ public class Analyzer {
 		int month = Integer.parseInt(LocalDate.now().format(DateTimeFormatter.ofPattern("MM")));
 		String year = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy"));
 		boolean isMixedYear = false;
-		int withdrawals = 0, incasso = 0;
+		int withdrawals = 0, incasso = 0, index = 0;
 		double withdrawalsSum = 0.0, incassoSum = 0.0;
-		int index = 0;
+
 
 		for (int i = 0; i < 6; i++) {
 			if ((month - i) < 1) {
@@ -61,7 +61,6 @@ public class Analyzer {
 			isMixedYear = true;
 		}
 
-		System.out.println(personTransactions.size());
 		for (Transactions transaction : personTransactions) {
 
 			String transactionYear = transaction.dateTime.substring(1, 5);
@@ -70,28 +69,30 @@ public class Analyzer {
 			if (monthsInterval.contains(transactionMonth) && (transactionYear.equals(year)
 					|| (isMixedYear && (Integer.parseInt(transactionYear) == (Integer.parseInt(year) - 1))))) {
 				index = monthsInterval.indexOf(transactionMonth);
-				if (transaction.transactionType == "\"Geldautomaat\"" && transaction.transactionCategory
+				if (transaction.transactionType.equals("\"Geldautomaat\"") && transaction.transactionCategory
 						== TransactionCategory.SPENDING) {
 					withdrawals++;
 					withdrawalsSum += Double.parseDouble(transaction.amount
-							.substring(1, transaction.amount.length() - 1).replace(",", "."));
+							.substring(0, transaction.amount.length() - 1).replace(",", "."));
 				}
-				if (transaction.transactionType == "\"Incasso\"") {
+				if (transaction.transactionType.equals("\"Incasso\"")) {
 					incasso++;
 					incassoSum += Double.parseDouble(transaction.amount
-							.substring(1, transaction.amount.length() - 1).replace(",", "."));
+							.substring(0, transaction.amount.length() - 1).replace(",", "."));
 				}
 				if (transaction.transactionCategory == TransactionCategory.INCOME) {
 					incomePerMonth.set(index, incomePerMonth.get(index) + Double.parseDouble(transaction.amount
-							.substring(1, transaction.amount.length() - 1).replace(",", ".")));
+							.replace(",", ".")));
+
 				} else {
 					incomePerMonth.set(index, incomePerMonth.get(index) - Double.parseDouble(transaction.amount
-							.substring(1, transaction.amount.length() - 1).replace(",", ".")));
+							.replace(",", ".")));
 				}
 
 			}
 
 		}
+
 
 		List<IntervalOverview> intervalOverviews = IntervalOverview.listAll();
 
@@ -113,6 +114,8 @@ public class Analyzer {
 		intervalOverview.withdrawalsSum = String.valueOf(withdrawalsSum);
 		intervalOverview.incasso = incasso;
 		intervalOverview.incassoSum = String.valueOf(incassoSum);
+
+
 		intervalOverview.persist();
 	}
 }

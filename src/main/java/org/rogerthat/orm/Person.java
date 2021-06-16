@@ -21,18 +21,6 @@ public class Person extends EntitySuperclassIdOnly{
 	@Column(nullable = false,name = "age")
 	public int age;
 
-//	@OneToMany
-//	@JoinColumn(nullable = false,name = "income")
-//	public Income income;
-//
-//	@OneToMany
-//	@JoinColumn(nullable = false, name = "spendings")
-//	public Spendings spendings;
-//
-//	@OneToMany
-//	@JoinColumn(nullable = false, name = "transactions")
-//	public Transactions transactions;
-
 	@OneToMany
 	@JoinTable(name = "person_transactions",
 			joinColumns = {@JoinColumn(name = "person_id")},
