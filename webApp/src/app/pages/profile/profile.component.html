@@ -1,17 +1,103 @@
 
-<nz-layout class="app-layout">
-  <nz-layout>
-    <nz-header>
-      <h1> My Profile
-      </h1>
-    </nz-header>
-    <h3 [ngStyle]="{ margin: '16px 14px' }">Hi, {{userName}}!</h3>
-    <nz-list nzBordered = false nzSize="large">
-      <li> <i nz-icon nzType="mail" nzTheme="outline"></i> Email: {{email}}</li>
-      <li> <i nz-icon nzType="phone" nzTheme="outline"></i> Phone number:{{phoneNr}}</li>
-      <li> <i nz-icon nzType="bank" nzTheme="outline"></i> Employed:{{employed}}</li>
-      <li><i nz-icon nzType="heart" nzTheme="outline"></i> Married: {{married}}</li>
-      <li><i nz-icon nzType="team" nzTheme="outline"></i> Children: {{children}}</li>
-    </nz-list>
-  </nz-layout>
-</nz-layout>
+    <div class="">
+      <nz-layout>
+      <div class="media clearfix">
+        <div class="media-left pr30">
+          <a href="#">
+            <img class="media-object mw150" src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="...">
+          </a>
+        </div>
+        <div class="media-body va-m">
+          <h2 class="media-heading">Hi, {{firstName}}!
+          </h2>
+          <p class="lead">Welcome to RogerThat! Here you can safely share your data with us and get some valuable advice.</p>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="panel-body inf-content">
+          <table class="table table-user-information">
+            <tbody>
+            <tr>
+              <td>
+                <strong>
+                  Full name
+                </strong>
+              </td>
+              <td class="text-primary">
+                {{userName}}
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <strong>
+                  Email
+                </strong>
+              </td>
+              <td class="text-primary">
+                {{email}}
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <strong>
+                  Phone number
+                </strong>
+              </td>
+              <td class="text-primary">
+                {{phoneNr}}
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <strong>
+                  Address
+                </strong>
+              </td>
+              <td class="text-primary">
+                {{address}}
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <strong>
+                  Married
+                </strong>
+              </td>
+              <td class="text-primary">
+                {{married}}
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <strong>
+                  Children
+                </strong>
+              </td>
+              <td class="text-primary">
+                {{children}}
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <strong>
+                  <span class="glyphicon glyphicon-calendar text-primary"></span>
+                  Gender
+                </strong>
+              </td>
+              <td class="text-primary">
+                {{genderMale}}
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="profile-details">
+          <i nz-icon nzType="upload" nzTheme="outline"></i> Transactions Uploads: <span>82</span>
+        </div>
+        <div class="profile-since">
+          Member since: Jan 2021
+        </div>
+      </div>
+      </nz-layout>
+    </div>
+

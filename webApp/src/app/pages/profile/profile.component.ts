@@ -6,12 +6,18 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent implements OnInit {
-  userName = 'Andreyka Sorocovici';
-  email = 'andreyka.sorocovicika@gmail.com';
+  firstName = 'John';
+  lastName = 'Sorocovici';
+  userName = this.firstName + ' ' + this.lastName;
+  email = 'john.sorocovicika@gmail.com';
   phoneNr = '+31648679065';
-  employed = 'yes';
-  married = 'no';
+  employed = 'Yes';
+  married = 'No';
   children = '1';
+  genderMale = 'Male';
+  genderFemale = 'Female';
+  address = 'Oude Ebbigenstraat 10C';
+
   constructor() { }
 
   ngOnInit(): void {

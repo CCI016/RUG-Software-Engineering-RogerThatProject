@@ -2,27 +2,35 @@
   <h1> Register
   </h1>
 </nz-header>
-<form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
-  <nz-form-item>
-    <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="email">Username</nz-form-label>
-      <input nz-input formControlName="email" id="username" />
-  </nz-form-item>
+<div class="parent">   <div layout="row" layout-align="center center">
+<form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()" >
   <nz-form-item>
     <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="email">E-mail</nz-form-label>
     <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="The input is not valid E-mail!">
-      <input nz-input formControlName="email" id="email" />
+      <input nz-input placeholder="Type here your email" formControlName="email" id="email" style="color:#000000;"/>
     </nz-form-control>
   </nz-form-item>
   <nz-form-item>
+    <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="phoneNumber" nzRequired>Phone Number</nz-form-label>
+        <nz-form-control
+          [nzSm]="14"
+          [nzXs]="24"
+          [nzValidateStatus]="validateForm.controls['phoneNumber']"
+          nzErrorTip="Please input your phone number!"
+        >
+            <input formControlName="phoneNumber" id="'phoneNumber'" nz-input />
+        </nz-form-control>
+    </nz-form-item>
+  <nz-form-item>
     <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="password" nzRequired>Password</nz-form-label>
     <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Please input your new password!">
-      <input nz-input type="password" id="password" formControlName="password" (ngModelChange)="updateConfirmValidator()" />
+      <input nz-input placeholder="Type here your password" type="password" id="password" formControlName="password" (ngModelChange)="updateConfirmValidator()" style="color:#000000;"/>
     </nz-form-control>
   </nz-form-item>
   <nz-form-item>
     <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="checkPassword" nzRequired>Confirm Password</nz-form-label>
     <nz-form-control [nzSm]="14" [nzXs]="24" [nzErrorTip]="errorTpl">
-      <input nz-input type="password" formControlName="checkPassword" id="checkPassword" />
+      <input nz-input placeholder="Type here your password" type="password" formControlName="checkPassword" id="checkPassword" style="color:#000000;"/>
       <ng-template #errorTpl let-control>
         <ng-container *ngIf="control.hasError('required')">
           Please confirm your password!
@@ -33,6 +41,53 @@
       </ng-template>
     </nz-form-control>
   </nz-form-item>
-  <button nz-button nzType="primary">Confirm</button>
+  <nz-form-item>
+    <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="nickname" nzRequired nzTooltipTitle="Your full name">
+      <span>Name</span>
+    </nz-form-label>
+    <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Please input your full name">
+      <input nz-input id="nickname" formControlName="nickname" />
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="address">Address</nz-form-label>
+      <input nz-input placeholder="Type here your address"/>
+  </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="age" nzRequired>
+        <span>Age</span>
+      </nz-form-label>
+      <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Please input your age!">
+        <input nz-input id="age" formControlName="age" />
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="gender" nzRequired>Gender</nz-form-label>
+      <nz-form-control [nzSpan]="12" nzHasFeedback>
+        <nz-select name="gender">
+          <nz-option nzValue="male" nzLabel="Male"></nz-option>
+          <nz-option nzValue="female" nzLabel="Female"></nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="married" nzRequired>Marriage Status</nz-form-label>
+      <nz-form-control [nzSpan]="12" nzHasFeedback>
+        <nz-select name="marriageselect">
+          <nz-option nzValue="Yes" nzLabel="Yes"></nz-option>
+          <nz-option nzValue="No" nzLabel="No"></nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="age" nzRequired>
+        <span>Children</span>
+      </nz-form-label>
+      <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Please input how many children do you have!">
+        <input nz-input id="children" formControlName="children" />
+      </nz-form-control>
+    </nz-form-item>
+  <button nz-button nzType="primary" class="confirm">Confirm</button>
 </form>
+</div></div>
 
