@@ -11,7 +11,7 @@ Before starting doing your task you MUST:</br>
 </br>
 By following this simple rules we can be sure that someone's mistakes will not affect the work of other students.
 
-###Back and DB
+## Backend and DB
 Our application uses a MySql DB, the configuration file is in root folder/src.../resources/application.properties
 In order to compile our program change :
 quarkus.datasource.jdbc.url=jdbc:mysql://127.0.0.1:3306/**rogerthat** with the name of your db(it must be empty and have no schema)
