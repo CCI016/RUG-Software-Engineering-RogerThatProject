@@ -31,6 +31,7 @@ csv.directory=/Users/c.c.1/Desktop/RUG-Software-Engineering-RogerThatProject/csv
 $ mvn clean compile quarkus:dev
 
 ```
+<br /> The backend application should now be running on `localhost:8080`
 
 ## Web Application
 Our web application has been implemented using the Angular framework.
