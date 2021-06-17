@@ -47,6 +47,10 @@ public class TransactionsEndpoint {
 			return Response.status(500).build();
 		}
 		Person person = user.person;
+		if (person.transactions.size() == 0) {
+			List<Transactions> transactions = new ArrayList<>();
+			return Response.ok(mapper.writeValueAsString(transactions)).build();
+		}
 		List<Transactions> transactions = person.transactions.stream()
 				.filter(t -> t.spendingCategory == SpendingCategories.UNKNOWN).collect(Collectors.toList());
 

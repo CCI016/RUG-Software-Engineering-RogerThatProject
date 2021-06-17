@@ -42,4 +42,5 @@ public class IntervalOverview extends EntitySuperclassIdOnly {
 
 	@Column(name = "incasso_sum")
 	public String incassoSum;
+
 }
