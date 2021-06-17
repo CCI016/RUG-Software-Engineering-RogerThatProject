@@ -13,18 +13,24 @@ By following this simple rules we can be sure that someone's mistakes will not a
 
 ## Backend and DB
 Our application uses a MySql DB, the configuration file is in root folder/src.../resources/application.properties
-In order to compile our program change :
-quarkus.datasource.jdbc.url=jdbc:mysql://127.0.0.1:3306/**rogerthat** with the name of your db(it must be empty and have no schema)
-quarkus.datasource.username=root - here put your DB credentials
-quarkus.datasource.password=rogerthat
-if you compile the application for the first time also use:
-#quarkus.hibernate-orm.database.generation = none
-quarkus.hibernate-orm.database.generation = create
-if it is not for the first time use : 
-quarkus.hibernate-orm.database.generation = none
-#quarkus.hibernate-orm.database.generation = create
-Also you must change csv.directory=/Users/c.c.1/Desktop/RUG-Software-Engineering-RogerThatProject/csv/ to a location where the user's csv uploaded files will be stored. After you have done this, go to the root folder of our program and run it with the comand:
-mvn clean compile quarkus:dev
+In order to compile our program change : <br />
+quarkus.datasource.jdbc.url=jdbc:mysql://127.0.0.1:3306/**rogerthat** with the name of your db(it must be empty and have no schema)<br />
+quarkus.datasource.username=root - here put your DB credentials<br />
+quarkus.datasource.password=rogerthat<br />
+if you compile the application for the first time also use:<br />
+#quarkus.hibernate-orm.database.generation = none<br />
+quarkus.hibernate-orm.database.generation = create<br />
+if it is not for the first time use : <br />
+quarkus.hibernate-orm.database.generation = none <br />
+#quarkus.hibernate-orm.database.generation = create <br />
+Also you must change <br />
+csv.directory=/Users/c.c.1/Desktop/RUG-Software-Engineering-RogerThatProject/csv/ to a location where the user's csv uploaded files will be stored. After you have done this, go to the root folder of our program and run it with the comand:<br />
+
+
+```bash
+$ mvn clean compile quarkus:dev
+
+```
 
 ## Web Application
 Our web application has been implemented using the Angular framework.
