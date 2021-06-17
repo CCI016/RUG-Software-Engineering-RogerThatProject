@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+
 
 @Injectable({
   providedIn: 'root'
@@ -18,5 +19,17 @@ export class WebRequestService {
   postData(uri : string, t : any) : Observable<any> {
     return this.http.post(`${this.ROOT_URL}/${uri}`, t);
   }
+
+  getOctetStream(URL: string) {
+    const httpOptions = {
+        headers: new HttpHeaders({
+            Accept: 'application/octet-stream',
+        }),
+        responseType: 'blob' as 'blob',
+        // withCredentials: true,
+    };
+
+    return this.http.get(`${this.ROOT_URL}/${URL}`, httpOptions).toPromise();
+}
 
 }

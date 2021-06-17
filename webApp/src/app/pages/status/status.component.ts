@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { UserIDService } from '@app/services/user-id.service';
 import { WebRequestService } from '@app/services/web.service';
 import { Transaction } from '@app/shared/models/transactions';
@@ -37,20 +38,30 @@ export class StatusComponent implements OnInit {
     private webService : WebRequestService,
     private modal: NzModalService,
     private messageService : UserIDService,
+    private router: Router,
   ) { }
 
   ngOnInit(): void {
     this.value = [];
     this.messageService.currentMessage.subscribe(message => this.userId = message);
+    if (this.userId == "null") {
+      const returnUrl = '/login';
+      this.router.navigate([returnUrl]);
+    }
   }
 
   downloadOverview() {
-    console.log("BB");
-    this.webService.getData("rest/transaction/downloadOverview?id=" + this.userId).subscribe(
-      data => {
-        console.log("AA");
-      }
-    )
+   
+    this.getSrcForDownloadFile("/rest/transaction/downloadOverview?id=" + this.userId)
+    .then(src => {
+      const link = document.createElement('a');
+      link.setAttribute('target', '_blank');
+      link.setAttribute('href', src);
+      link.setAttribute('download', "overview");
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    });
   }
 
   categorizeTransactions() {
@@ -77,6 +88,14 @@ export class StatusComponent implements OnInit {
   log(value: any, id : number): void {
     this.transactions[id].spendingCategory = value.target.value;
   }
+
+  getSrcForDownloadFile(url : string): Promise<string> {
+    return this.webService.getOctetStream(`${url}`)
+        .then(response => {
+            const blob = new Blob([response as any], { type: 'application/pdf' });
+            return window.URL.createObjectURL(blob);
+        });
+}
 
 }
 

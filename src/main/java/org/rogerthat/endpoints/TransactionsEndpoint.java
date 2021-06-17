@@ -12,12 +12,16 @@ import javax.transaction.Transactional;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.io.File;
+import java.io.IOException;
 import java.io.StringReader;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.json.Json;
 import javax.json.JsonObject;
+import javax.ws.rs.core.StreamingOutput;
 
 
 /**
@@ -95,8 +99,14 @@ public class TransactionsEndpoint {
 		return Response.status(200).build();
 	}
 
+	/**
+	 * Calls PDF generator, which creates a file that will be downloaded by the user
+	 * @param id user id
+	 * @return byte stream
+	 */
 	@GET
 	@Path("downloadOverview")
+	@Produces(MediaType.APPLICATION_OCTET_STREAM)
 	@Transactional
 	public Response getOverview(@QueryParam("id") Long id) {
 		User user = User.findById(id);
@@ -105,9 +115,24 @@ public class TransactionsEndpoint {
 		} else {
 			Person person = user.person;
 			PDFGenerator pdfGenerator = new PDFGenerator();
-			pdfGenerator.generatePDF(person.id);
+			int i = pdfGenerator.generatePDF(person.id);
+			StreamingOutput stream = output -> {
+				File file = new File("overview.pdf");
+				byte[] data = null;
+				if (file != null) {
+					try {
+						data = Files.readAllBytes(file.toPath());
+					} catch (IOException e) {
+						System.out.println("Could not read bytes");
+					}
+					output.write(data);
+					output.flush();
+					file.delete();
+				}
+
+			};
+			return Response.ok(stream, MediaType.APPLICATION_OCTET_STREAM).build();
 		}
-		return Response.ok().build();
 	}
 
 	private SpendingCategories getSpendingCategory(String s) {
