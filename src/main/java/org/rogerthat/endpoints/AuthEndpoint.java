@@ -1,23 +1,22 @@
 package org.rogerthat.endpoints;
 
-import org.eclipse.microprofile.config.inject.ConfigProperty;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.rogerthat.orm.Person;
 import org.rogerthat.orm.User;
 
+import javax.json.Json;
+import javax.json.JsonObject;
 import javax.transaction.Transactional;
 import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import java.io.StringReader;
 import java.util.Base64;
 
 @Path("/rest/auth")
 public class AuthEndpoint {
-
-    @ConfigProperty(name = "email")
-    String email;
-
-    @ConfigProperty(name = "password")
-    String pass;
 
     private final ObjectMapper mapper;
 
@@ -41,9 +40,13 @@ public class AuthEndpoint {
         // Check if the strings are matching and user exists
         if(userExists(email) && pass.equals(getPass(email))) {
             // Access the web page
-            User user = User.find("email = ?1", email);
+            User user = User.find("email = ?1", email).firstResult();
             // 200 : OK successful response
-            return Response.ok(mapper.writeValueAsString(user.id)).build();
+            try {
+                return Response.ok(mapper.writeValueAsString(user.id)).build();
+            } catch (JsonProcessingException e) {
+                return Response.status(401).build();
+            }
         } else {
             // Deny access and let them try again
             // 401 : Unauthorized client error response
@@ -53,22 +56,40 @@ public class AuthEndpoint {
 
     @POST
     @Path("register")
+    @Consumes(MediaType.APPLICATION_JSON)
     @Transactional
-    public Response register(String email, String pass, String firstName, String lastName, int age) {
-        if(userExists(email)) {
-            return Response.status(401).build();
+    public Response register(String body) {
+        String email;
+        JsonObject json = Json.createReader(new StringReader(body)).readObject();
+
+        if (json.containsKey("email")) {
+            email = json.getString("email");
+            User user = User.find("email = ?1", email).firstResult();
+
+            if (user == null) {
+                user = new User();
+                Person person = new Person();
+                user.email = email;
+                user.password = Base64.getEncoder().encodeToString(json.getString("password").getBytes());
+                user.phoneNumber = json.getString("phoneNumber");
+
+                person.address = json.getString("address");
+                person.firstName = json.getString("firstName");
+                person.lastName = json.getString("lastName");
+                person.age = json.getString("age");
+                person.gender = json.getString("gender");
+
+                person.persist();
+                user.person = person;
+                user.persist();
+                return Response.ok().build();
+            } else {
+                return Response.status(401).build(); // User already exists
+            }
+
+
         } else {
-            User user = new User();
-            user.email = email;
-
-            String encodedPass = Base64.getEncoder().encodeToString(pass.getBytes());
-            user.password = encodedPass;
-
-            user.person.firstName = firstName;
-            user.person.lastName = lastName;
-            user.person.age = age;
-            user.persist();
-            return Response.status(200).build();
+            return Response.status(500).build();
         }
     }
 

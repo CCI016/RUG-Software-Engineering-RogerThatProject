@@ -8,47 +8,66 @@ import org.rogerthat.orm.Person;
 import org.rogerthat.orm.TransactionCategory;
 import org.rogerthat.orm.Transactions;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.net.URISyntaxException;
+import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.List;
 import java.util.stream.Stream;
 
-public class PDFGenerator { 
+public class PDFGenerator {
 
     public void generatePDF(Long personID) {
+        String imgPath, overviewPath;
+        imgPath = "src/java/org.rogerthat/services/roger_that_logo.png";
+        overviewPath = "/Users/c.c.1/Desktop/RUG-Software-Engineering-RogerThatProject/src/java/org.rogerthat/services/overview.pdf";
         // Adding RogerThat logo to the document
-        Path path = null;
-        try {
-            path = Paths.get(ClassLoader.getSystemResource("roger_that_logo.png").toURI());
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
+//        Path path = null;
+//        System.out.println(imgPath);
+//        path = Paths.get(imgPath);
+//
+////        System.out.println(path);
+//        Document document = new Document();
+//        try {
+//            PdfWriter.getInstance(document, new FileOutputStream(overviewPath));
+//        } catch (Exception e) {
+//            System.out.println("Document Exception " + e);
+//        }
+//        document.open();
+//        Image img = null;
+//
+//        try {
+//            img = Image.getInstance(imgPath);
+//        } catch (Exception e) {
+//            System.out.println("Could not load the image");
+//        }
+//        try {
+//            document.add(img);
+//        } catch (DocumentException e) {
+//            e.printStackTrace();
+//        }
 
+        PdfWriter writer = null;
         Document document = new Document();
         try {
-            PdfWriter.getInstance(document, new FileOutputStream("overview.pdf"));
-        } catch (DocumentException e) {
-            e.printStackTrace();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        document.open();
-        Image img = null;
+            writer = PdfWriter.getInstance(document, new FileOutputStream("overview.pdf"));
+            document.open();
 
+        } catch (Exception e) {
+            System.out.println("Could not create pdf file");
+        }
+
+        System.out.println("Working Directory = " + System.getProperty("user.dir"));
+        Image img;
         try {
-            img = Image.getInstance(path.toAbsolutePath().toString());
-        } catch (BadElementException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+            Path path = Paths.get(imgPath);
+
+//            img = Image.getInstance(path);
+        } catch (Exception e) {
+            System.out.println("Could not load the image");
         }
         try {
-            document.add(img);
+            document.add(new Paragraph("Roger That: Financial Overview"));
         } catch (DocumentException e) {
             e.printStackTrace();
         }
@@ -68,8 +87,10 @@ public class PDFGenerator {
         String months[] = {interval.month_0, interval.month_1, interval.month_2, interval.month_3, interval.month_4};
         PdfPCell cell = new PdfPCell();
         for (String month : months) {
+            System.out.println(month);
             cell = new PdfPCell(new Phrase(month));
-            if(Float.parseFloat(month) < 0) {
+            List<String> parse = Arrays.asList(month.split(":"));
+            if(Float.parseFloat(parse.get(1)) < 0) {
                 cell.setBackgroundColor(BaseColor.RED);
             } else {
                 cell.setBackgroundColor(BaseColor.GREEN);
@@ -136,7 +157,8 @@ public class PDFGenerator {
                     entertainmentTransactions = entertainmentTransactions + Double.parseDouble(transaction.amount);
                 default:
                     if(!(transaction.transactionType.equals("\"Betaalautomaat\"") && transaction.accountTo.equals("\"\""))){
-                        unknownTransactions = unknownTransactions + Double.parseDouble(transaction.amount);
+                        unknownTransactions = unknownTransactions + Double.parseDouble(transaction.amount
+                                .replace(",", "."));
                     }
             }
         }
@@ -195,7 +217,9 @@ public class PDFGenerator {
             e.printStackTrace();
         }
 
+//        document.close();
         document.close();
+        writer.close();
     }
 
     private void addTableHeader(PdfPTable table) {
@@ -204,7 +228,8 @@ public class PDFGenerator {
                     PdfPCell header = new PdfPCell();
                     header.setBackgroundColor(BaseColor.LIGHT_GRAY);
                     header.setBorderWidth(2);
-                    header.setPhrase(new Phrase(columnTitle));
+                    List<String> parse = Arrays.asList(columnTitle.split(":"));
+                    header.setPhrase(new Phrase(parse.get(0)));
                     table.addCell(header);
                 });
     }

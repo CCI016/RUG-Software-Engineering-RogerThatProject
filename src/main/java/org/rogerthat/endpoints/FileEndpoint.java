@@ -49,8 +49,6 @@ public class FileEndpoint {
 		List<InputPart> inputParts = uploadForm.get("uploadedFile");
 		User user;
 
-		userId = 1L;
-
 		try {
 			user = User.findById(userId);
 		} catch (Exception e) {

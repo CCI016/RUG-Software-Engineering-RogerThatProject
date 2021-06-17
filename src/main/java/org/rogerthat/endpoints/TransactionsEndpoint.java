@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.rogerthat.orm.*;
 import org.rogerthat.services.CSVParser;
+import org.rogerthat.services.PDFGenerator;
 
 import javax.json.JsonArray;
 import javax.transaction.Transactional;
@@ -40,6 +41,7 @@ public class TransactionsEndpoint {
 	@Path("getById")
 	@Transactional
 	public Response getTransactionsById(@QueryParam("id") Long id) throws JsonProcessingException {
+		System.out.println(id);
 		User user = User.findById(id);
 		if (user == null) {
 			return Response.status(500).build();
@@ -87,6 +89,21 @@ public class TransactionsEndpoint {
 			return Response.status(500).build();
 		}
 		return Response.status(200).build();
+	}
+
+	@GET
+	@Path("downloadOverview")
+	@Transactional
+	public Response getOverview(@QueryParam("id") Long id) {
+		User user = User.findById(id);
+		if (user == null) {
+			return Response.status(500).build();
+		} else {
+			Person person = user.person;
+			PDFGenerator pdfGenerator = new PDFGenerator();
+			pdfGenerator.generatePDF(person.id);
+		}
+		return Response.ok().build();
 	}
 
 	private SpendingCategories getSpendingCategory(String s) {

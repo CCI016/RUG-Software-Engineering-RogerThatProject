@@ -19,19 +19,7 @@ public class Person extends EntitySuperclassIdOnly{
 	public String lastName;
 
 	@Column(nullable = false,name = "age")
-	public int age;
-
-//	@OneToMany
-//	@JoinColumn(nullable = false,name = "income")
-//	public Income income;
-//
-//	@OneToMany
-//	@JoinColumn(nullable = false, name = "spendings")
-//	public Spendings spendings;
-//
-//	@OneToMany
-//	@JoinColumn(nullable = false, name = "transactions")
-//	public Transactions transactions;
+	public String age;
 
 	@OneToMany
 	@JoinTable(name = "person_transactions",
@@ -39,4 +27,10 @@ public class Person extends EntitySuperclassIdOnly{
 			inverseJoinColumns = {@JoinColumn(name = "transaction_id")}
 	)
 	public List<Transactions> transactions;
+
+	@Column(name = "address")
+	public String address;
+
+	@Column(name = "gender")
+	public String gender;
 }

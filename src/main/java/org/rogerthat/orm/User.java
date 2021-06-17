@@ -14,10 +14,10 @@ public class User extends EntitySuperclassIdOnly {
 	@Column(nullable = false, name = "email")
 	public String email;
 
-	@Column(nullable = false, name = "login")
-	public String login;
-
 	@Column(nullable = false, name = "password")
 	public String password; //Need to encrypt it at later stages, now we can work with exposed passwords.
+
+	@Column(name = "phoneNumber")
+	public String phoneNumber;
 
 }

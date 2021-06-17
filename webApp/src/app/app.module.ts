@@ -53,7 +53,8 @@ import {RouterModule} from '@angular/router';
         IconsProviderModule,
         BrowserAnimationsModule,
         NzModalModule,
-        NzSelectModule
+        NzSelectModule,
+        
     ],
     declarations: [
         AppComponent,
@@ -64,7 +65,8 @@ import {RouterModule} from '@angular/router';
         StatusComponent,
         SettingsComponent,
         RegisterComponent,
-        ContactComponent
+        ContactComponent,
+        
     ],
     providers: [
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },

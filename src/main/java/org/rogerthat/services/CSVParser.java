@@ -24,8 +24,6 @@ public class CSVParser  {
 
         BufferedReader fileReader = null;
 
-        userID = 1L;
-
         User user = User.findById(userID);
 
         if (user == null) {

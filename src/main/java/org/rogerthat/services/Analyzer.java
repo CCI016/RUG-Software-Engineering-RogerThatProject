@@ -61,7 +61,6 @@ public class Analyzer {
 			isMixedYear = true;
 		}
 
-		System.out.println(personTransactions.size());
 		for (Transactions transaction : personTransactions) {
 
 			String transactionYear = transaction.dateTime.substring(1, 5);

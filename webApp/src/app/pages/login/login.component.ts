@@ -1,10 +1,9 @@
 ﻿import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { first } from 'rxjs/operators';
-
-import { AuthenticationService } from '@app/_services';
 import { WebRequestService } from '@app/services/web.service';
+import { UserIDService } from '@app/services/user-id.service';
+
 
 @Component({ templateUrl: 'login.component.html', styleUrls: ['./login.component.css'] })
 export class LoginComponent implements OnInit {
@@ -18,13 +17,11 @@ export class LoginComponent implements OnInit {
         private formBuilder: FormBuilder,
         private route: ActivatedRoute,
         private router: Router,
-        private authenticationService: AuthenticationService,
         private webService: WebRequestService,
+        private messageService : UserIDService,
     ) {
         // redirect to home if already logged in
-        if (this.authenticationService.currentUserValue) {
-            this.router.navigate(['/']);
-        }
+    
     }
 
     ngOnInit() {
@@ -45,25 +42,12 @@ export class LoginComponent implements OnInit {
             return;
         }
 
-        this.webService.getData("/rest/auth/login?email=" + this.f.username.value + "&password=" + this.f.password.value).subscribe(
+        this.webService.getData("rest/auth/auth?email=" + this.f.username.value + "&password=" + this.f.password.value).subscribe(
              data => {
-                    this.userId = data as number;
+                    this.messageService.changeUserId(data as string);
+                    const returnUrl = '/profile';
+                    this.router.navigate([returnUrl]);
              }
         )
-        
-        this.loading = true;
-        this.authenticationService.login(this.f.username.value, this.f.password.value)
-            .pipe(first())
-            .subscribe({
-                next: () => {
-                    // get return url from route parameters or default to '/'
-                    const returnUrl = 'profile';
-                    this.router.navigate([returnUrl]);
-                },
-                error: error => {
-                    this.error = error;
-                    this.loading = false;
-                }
-            });
     }
 }

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { UserIDService } from '@app/services/user-id.service';
 import { WebRequestService } from '@app/services/web.service';
-import { spendingCategory } from '@app/shared/models/spendingCategory';
 import { Transaction } from '@app/shared/models/transactions';
 import { NzModalService } from 'ng-zorro-antd/modal';
 
@@ -13,7 +13,7 @@ import { NzModalService } from 'ng-zorro-antd/modal';
 })
 export class StatusComponent implements OnInit {
 
-  userId = 1;
+  userId: string;
   transactions : Transaction[];
   isVisible=false;
   value : [];
@@ -36,14 +36,21 @@ export class StatusComponent implements OnInit {
   constructor(
     private webService : WebRequestService,
     private modal: NzModalService,
+    private messageService : UserIDService,
   ) { }
 
   ngOnInit(): void {
     this.value = [];
+    this.messageService.currentMessage.subscribe(message => this.userId = message);
   }
 
   downloadOverview() {
-    // Here the request to the server where the pdf file will be created and after that it will download
+    console.log("BB");
+    this.webService.getData("rest/transaction/downloadOverview?id=" + this.userId).subscribe(
+      data => {
+        console.log("AA");
+      }
+    )
   }
 
   categorizeTransactions() {
@@ -62,7 +69,7 @@ export class StatusComponent implements OnInit {
   }
 
   handleOk() {
-    this.webService.postData("/rest/transaction/updateCategorization?", this.transactions).subscribe();
+    this.webService.postData("rest/transaction/updateCategorization?", this.transactions).subscribe();
     this.isVisible = false;
   }
 
