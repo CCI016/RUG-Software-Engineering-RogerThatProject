@@ -9,4 +9,32 @@ Before starting doing your task you MUST:</br>
 **2.** Create a new branch related to your issue (github will propose to do this for you, but if you choose to do this manually, the branch must have the same name as the issue it's related to.)</br>
 **3.** After you finished doing your work and you tested the functionality, create a merge request with master, see if you have any git conflicts, solve them and after that you can push to master.</br>
 </br>
-By following this simple rules we can be sure that someone's mistakes will not affect the work of other students. 
+By following this simple rules we can be sure that someone's mistakes will not affect the work of other students.
+
+## Web Application
+Our web application has been implemented using the Angular framework.
+
+### Deploying an instance of the web application
+The web application can be deployed easily. NodeJS and Angular should be present on the system in order to deploy the instance. The following instructions are written with Ubuntu 20.04 in mind, but instructions should be relatively similar for most other Linux, Mac OS or Windows based operating systems.
+
+1. Install NodeJS and Angular
+```bash
+$ sudo apt-get install curl
+$ curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
+$ sudo apt-get install nodejs
+$ npm install -g @angular/cli
+```
+2. Navigate to the _webApp/_ folder
+```bash
+$ cd webApp/
+```
+3. Install dependencies
+```bash
+$ npm install
+```
+4.  Run the application
+```bash
+$ ng s -o
+```
+
+The web application should now be running on `localhost:4200`
