@@ -5,10 +5,12 @@
         <div class="media-left pr30">
           <a href="#">
             <img class="media-object mw150" src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="...">
+            <!--https://www.liquor.or.th/assets/admin/themes/img/avatar2.png -->
+            <!-- https://bootdey.com/img/Content/avatar/avatar7.png -->
           </a>
         </div>
         <div class="media-body va-m">
-          <h2 class="media-heading">Hi, {{firstName}}!
+          <h2 class="media-heading">Hi, {{user.person.firstName}}!
           </h2>
           <p class="lead">Welcome to RogerThat! Here you can safely share your data with us and get some valuable advice.</p>
         </div>
@@ -24,7 +26,7 @@
                 </strong>
               </td>
               <td class="text-primary">
-                {{userName}}
+                {{user.person.firstName + " " +  user.person.lastName}}
               </td>
             </tr>
             <tr>
@@ -34,7 +36,7 @@
                 </strong>
               </td>
               <td class="text-primary">
-                {{email}}
+                {{user.email}}
               </td>
             </tr>
             <tr>
@@ -44,7 +46,7 @@
                 </strong>
               </td>
               <td class="text-primary">
-                {{phoneNr}}
+                {{user.phoneNumber}}
               </td>
             </tr>
             <tr>
@@ -54,27 +56,7 @@
                 </strong>
               </td>
               <td class="text-primary">
-                {{address}}
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <strong>
-                  Married
-                </strong>
-              </td>
-              <td class="text-primary">
-                {{married}}
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <strong>
-                  Children
-                </strong>
-              </td>
-              <td class="text-primary">
-                {{children}}
+                {{user.person.address}}
               </td>
             </tr>
             <tr>
@@ -85,17 +67,17 @@
                 </strong>
               </td>
               <td class="text-primary">
-                {{genderMale}}
+                {{user.person.gender}}
               </td>
             </tr>
             </tbody>
           </table>
         </div>
         <div class="profile-details">
-          <i nz-icon nzType="upload" nzTheme="outline"></i> Transactions Uploads: <span>3</span>
+          <i nz-icon nzType="upload" nzTheme="outline"></i> Transactions Uploads: <span>Coming soon</span>
         </div>
         <div class="profile-since">
-          Member since: Jan 2021
+          Member since: Coming soon
         </div>
       </div>
       </nz-layout>
